@@ -136,22 +136,23 @@ public class BattleSystem : MonoBehaviour
 		hideSkillButtons();
 
 		//decidir atack 1 focus 2 atack 3 super atack
-		int attackChosen = Random.Range(0, 4);
+		int attackChosen = Random.Range(1, 4);
 		Debug.Log("random: " + attackChosen);
 
 		while (attackChosen==1 && isFocused)
 		{
 		//torna a calcular si toca focus i ja esta focus
- 		attackChosen = Random.Range(0, 4);
+ 		attackChosen = Random.Range(1, 4);
 		Debug.Log("ha coincidit random i focused");
 
 		}
 
 		
 		dialogText.gameObject.SetActive(true);
+		int damageMultiplier=1;
 		switch(attackChosen)
 		{
-			case 1:
+		case 1:
 		dialogText.text = enemyUnit.unitName + " is focusing...";
 		isFocused=true;
 		Debug.Log("atac: " + attackChosen);
@@ -161,8 +162,8 @@ public class BattleSystem : MonoBehaviour
 			//atac normal
 			if(isFocused)
 			{
-				enemyUnit.damage *= 2;
-				dialogText.text = enemyUnit.unitName + " attacks with more energy!";
+				//enemyUnit.damage *= 2;
+				dialogText.text = enemyUnit.unitName + " attacks with more energy! (atac 2 focused) 6 dmg";
 
 				yield return new WaitForSeconds(2f);
 
@@ -172,13 +173,14 @@ public class BattleSystem : MonoBehaviour
 				enemyAC.GetComponent<Animator>().SetTrigger("attack");
 				yield return new WaitForSeconds(2f);
 				isFocused=false;
+				damageMultiplier=2;
 				//reset damage
-				enemyUnit.damage=enemyUnit.baseDamage;
+				//enemyUnit.damage=enemyUnit.baseDamage * 2;
 
 			}
 			else
 			{
-				dialogText.text = enemyUnit.unitName + " attacks!";
+				dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
 				yield return new WaitForSeconds(2f);
 
 				personaEnemy.SetActive(true);
@@ -191,15 +193,17 @@ public class BattleSystem : MonoBehaviour
 			case 3:
 			if(isFocused)
 			{
-				dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit!";
-				enemyUnit.damage *= 4;
+				dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit! (atac 3 focused) 12 damage";
+				damageMultiplier=4;
+				//enemyUnit.damage *= 4;
 				isFocused=false;
 				//reiniciem damage
-				enemyUnit.damage=enemyUnit.baseDamage;
+				//enemyUnit.damage=enemyUnit.baseDamage;
 			}
 			else{
-				dialogText.text = enemyUnit.unitName + " charges with a strong attack!";
-				enemyUnit.damage *= 2;
+				dialogText.text = enemyUnit.unitName + " charges with a strong attack! (atac 3 NO focused) 6 damage";
+				damageMultiplier=2;
+				//enemyUnit.damage *= 2;
 			}
 			break;
 		}
@@ -211,6 +215,8 @@ public class BattleSystem : MonoBehaviour
 		personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 			break;
 			case 3:
+				enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
+
 			//super attack animacio	personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 			break;
 		}
@@ -222,8 +228,8 @@ public class BattleSystem : MonoBehaviour
 		}
 		else
 		{
-			isDead = playerUnit.TakeDamage(enemyUnit.damage);
-			dialogText.text = "deals " + enemyUnit.damage + " points of damage!";
+			isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
+			dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
 
 			yield return new WaitForSeconds(2f);
 			dialogText.gameObject.SetActive(false);
