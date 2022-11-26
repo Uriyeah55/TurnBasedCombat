@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public enum BattleState {START,PLAYERTURN,ENEMYTURN,WON,LOST}
 
 public class BattleSystem : MonoBehaviour
@@ -47,6 +48,9 @@ public class BattleSystem : MonoBehaviour
 	public Button buttonAttack;
 	public Button buttonHeal;
 
+	bool isFocused=false;
+	bool turnFocusedPassed=false;
+	int temporalDamageEnemy=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +65,9 @@ public class BattleSystem : MonoBehaviour
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
     }
+	void Update(){
+		Debug.Log("alfonso damage: " + enemyUnit.damage);
+	}
 
 	IEnumerator SetupBattle()
 	{
@@ -97,7 +104,7 @@ public class BattleSystem : MonoBehaviour
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogText.gameObject.SetActive(true);
-		dialogText.text = "The attack deals " + playerUnit.damage + " points of damage!";
+		dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
 
 		//persona (skeleton) events
 		skeletonCameraws.SetActive(true);
@@ -125,34 +132,112 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyTurn()
 	{
-
+		
 		hideSkillButtons();
+
+		//decidir atack 1 focus 2 atack 3 super atack
+		int attackChosen = Random.Range(0, 4);
+		Debug.Log("random: " + attackChosen);
+
+		while (attackChosen==1 && isFocused)
+		{
+		//torna a calcular si toca focus i ja esta focus
+ 		attackChosen = Random.Range(0, 4);
+		Debug.Log("ha coincidit random i focused");
+
+		}
+
+		
 		dialogText.gameObject.SetActive(true);
-		dialogText.text = enemyUnit.unitName + " attacks!";
+		switch(attackChosen)
+		{
+			case 1:
+		dialogText.text = enemyUnit.unitName + " is focusing...";
+		isFocused=true;
+		Debug.Log("atac: " + attackChosen);
+		//particules
+			break;
+			case 2:
+			//atac normal
+			if(isFocused)
+			{
+				enemyUnit.damage *= 2;
+				dialogText.text = enemyUnit.unitName + " attacks with more energy!";
 
-		yield return new WaitForSeconds(2f);
+				yield return new WaitForSeconds(2f);
 
-	 	personaEnemy.SetActive(true);
-		enemyPersonaCam.SetActive(true);
-		enemyAC.GetComponent<Animator>().SetTrigger("attack");
-		yield return new WaitForSeconds(2f);
+				personaEnemy.SetActive(true);
+				enemyPersonaCam.SetActive(true);
+
+				enemyAC.GetComponent<Animator>().SetTrigger("attack");
+				yield return new WaitForSeconds(2f);
+				isFocused=false;
+				//reset damage
+				enemyUnit.damage=enemyUnit.baseDamage;
+
+			}
+			else
+			{
+				dialogText.text = enemyUnit.unitName + " attacks!";
+				yield return new WaitForSeconds(2f);
+
+				personaEnemy.SetActive(true);
+				enemyPersonaCam.SetActive(true);
+
+				enemyAC.GetComponent<Animator>().SetTrigger("attack");
+				yield return new WaitForSeconds(2f);
+			}
+			break;
+			case 3:
+			if(isFocused)
+			{
+				dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit!";
+				enemyUnit.damage *= 4;
+				isFocused=false;
+				//reiniciem damage
+				enemyUnit.damage=enemyUnit.baseDamage;
+			}
+			else{
+				dialogText.text = enemyUnit.unitName + " charges with a strong attack!";
+				enemyUnit.damage *= 2;
+			}
+			break;
+		}
+		
+		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
+		
+		switch(attackChosen){
+			case 2:
 		personaEnemy.GetComponent<Animator>().SetTrigger("attack");
-
-		//Debug.Log("trigger enemic");
+			break;
+			case 3:
+			//super attack animacio	personaEnemy.GetComponent<Animator>().SetTrigger("attack");
+			break;
+		}
+		
 		yield return new WaitForSeconds(1f);
+		bool isDead; 
+		if(isFocused){
+			isDead = playerUnit.TakeDamage(0);
+		}
+		else
+		{
+			isDead = playerUnit.TakeDamage(enemyUnit.damage);
+			dialogText.text = "deals " + enemyUnit.damage + " points of damage!";
 
-		dialogText.text = "deals " + enemyUnit.damage + " points of damage!";
+			yield return new WaitForSeconds(2f);
+			dialogText.gameObject.SetActive(false);
 
-		yield return new WaitForSeconds(2f);
-		dialogText.gameObject.SetActive(false);
+			enemyPersonaCam.SetActive(false);
+			personaEnemy.SetActive(false);
+			playerHUD.SetHP(playerUnit.currentHP);
 
-		enemyPersonaCam.SetActive(false);
-	 	personaEnemy.SetActive(false);
+		}
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+		 //temporalDamageEnemy= enemyUnit.damage;
+		 //enemyUnit.damage=0;
 
-
-		playerHUD.SetHP(playerUnit.currentHP);
+		
 
 		yield return new WaitForSeconds(1f);
 
@@ -165,7 +250,6 @@ public class BattleSystem : MonoBehaviour
 			state = BattleState.PLAYERTURN;
 			PlayerTurn();
 		}
-
 	}
 
 	void EndBattle()

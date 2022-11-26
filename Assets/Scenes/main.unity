@@ -2510,6 +2510,7 @@ GameObject:
   - component: {fileID: 623420491}
   - component: {fileID: 623420490}
   - component: {fileID: 623420489}
+  - component: {fileID: 623420492}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -2575,6 +2576,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &623420492
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623420488}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 2b01ce45b2ca35f41a6cee34429d90c8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 2b01ce45b2ca35f41a6cee34429d90c8, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,7 +2772,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5c1b3878d50704c4ca0e71ff8d63f464, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4073,6 +4090,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7433264818161208861, guid: 6c3dd2887b9d4d44d8967fbcd74c4f23, type: 3}
+      propertyPath: baseDamage
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7433264818789630524, guid: 6c3dd2887b9d4d44d8967fbcd74c4f23, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9918398
@@ -4163,6 +4184,14 @@ PrefabInstance:
     - target: {fileID: 7863547992700877587, guid: 22659179548f0af4e954cfcc50a5e08e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863547992700877599, guid: 22659179548f0af4e954cfcc50a5e08e, type: 3}
+      propertyPath: unitName
+      value: Macaco
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863547992700877599, guid: 22659179548f0af4e954cfcc50a5e08e, type: 3}
+      propertyPath: baseDamage
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7863547993929799609, guid: 22659179548f0af4e954cfcc50a5e08e, type: 3}
       propertyPath: m_FontData.m_Font
