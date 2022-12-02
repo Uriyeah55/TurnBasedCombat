@@ -307,8 +307,8 @@ public class BattleSystem : MonoBehaviour
 	}
 	public void showDefenseSkills()
 	{
-		playerAC.SetTrigger("defStance");
-
+		//playerAC.SetTrigger("defStance");
+		playerAC.SetInteger("offenseStance", 2);
 		buttonHeal.gameObject.SetActive(true);
 		buttonGreatHeal.gameObject.SetActive(true);
 
@@ -369,6 +369,33 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(EnemyTurn());
 	}
 
+		IEnumerator PlayerBigHealAttempt()
+	{
+		hideSkillButtons();
+		//1 exit, ña resta fail
+		int healingSuccess = Random.Range(1, 6);
+		int amountHealed;
+		if(healingSuccess==1){
+			//full vida
+			amountHealed=playerUnit.maxHP-playerUnit.currentHP;
+			playerUnit.Heal(amountHealed);
+			playerHUD.SetHP(playerUnit.currentHP);
+			dialogText.gameObject.SetActive(true);
+			dialogText.text = "Super recovery heals you fully! You recover " + amountHealed + "HP!";
+		personaPlayerAC.SetTrigger("heal");
+		}
+		else{
+			dialogText.gameObject.SetActive(true);
+			dialogText.text = "Healing failed";
+		}
+		
+		yield return new WaitForSeconds(2f);
+		dialogText.gameObject.SetActive(false);
+
+		state = BattleState.ENEMYTURN;
+		StartCoroutine(EnemyTurn());
+	}
+
 	public void OnAttackButton()
 	{
 		if (state != BattleState.PLAYERTURN)
@@ -383,6 +410,13 @@ public class BattleSystem : MonoBehaviour
 			return;
 
 		StartCoroutine(PlayerHeal());
+	}
+	public void OnBigHealButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(PlayerBigHealAttempt());
 	}
 
 public void playSound()
