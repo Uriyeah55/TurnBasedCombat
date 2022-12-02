@@ -8,6 +8,8 @@ public enum BattleState {START,PLAYERTURN,ENEMYTURN,WON,LOST}
 
 public class BattleSystem : MonoBehaviour
 {
+
+	public AudioClip song;
 	//public GameObject playerPrefab;
 	//public GameObject enemyPrefab;
 
@@ -45,8 +47,18 @@ public class BattleSystem : MonoBehaviour
 
 
 	public Text dialogText;
+	//UI
 	public Button buttonAttack;
+	public Button buttonAttack2;
+
 	public Button buttonHeal;
+	public Button buttonGreatHeal;
+
+	public Button buttonOffenseSkills;
+	public Button buttonDefenseSkills;
+	public Button backSkills;
+
+
 
 	bool isFocused=false;
 	bool turnFocusedPassed=false;
@@ -54,13 +66,14 @@ public class BattleSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		hideSkillButtons();
 		camAnimator= mainCam.gameObject.GetComponent<Animator>();
 		skeleton.SetActive(false);
 	 	personaEnemy.SetActive(false);
 		personaPlayerAC= skeleton.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
 		enemyAC=enemy.GetComponent<Animator>();
-		hideSkillButtons();
+		
 		
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
@@ -86,8 +99,7 @@ public class BattleSystem : MonoBehaviour
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
-		buttonAttack.gameObject.SetActive(true);
-		buttonHeal.gameObject.SetActive(true);
+		showSkillButtons();
 		dialogText.gameObject.SetActive(false);
 
 	}
@@ -276,19 +288,69 @@ public class BattleSystem : MonoBehaviour
 		showSkillButtons();
 	}
 
-	void hideSkillButtons()
+	//### SHOW AND HIDE UI ###
+	public void showOffensiveSkills()
+	{
+		playSound();
+		playerAC.SetInteger("offenseStance", 1);
+		//playerAC.SetTrigger("offenseStance");
+		buttonAttack.gameObject.SetActive(true);
+		buttonAttack2.gameObject.SetActive(true);
+
+		buttonHeal.gameObject.SetActive(false);
+		buttonGreatHeal.gameObject.SetActive(false);
+
+		buttonOffenseSkills.gameObject.SetActive(false);
+		buttonDefenseSkills.gameObject.SetActive(false);
+
+		backSkills.gameObject.SetActive(true);
+	}
+	public void showDefenseSkills()
+	{
+		playerAC.SetTrigger("defStance");
+
+		buttonHeal.gameObject.SetActive(true);
+		buttonGreatHeal.gameObject.SetActive(true);
+
+		buttonAttack.gameObject.SetActive(false);
+		buttonAttack2.gameObject.SetActive(false);
+
+		buttonOffenseSkills.gameObject.SetActive(false);
+		buttonDefenseSkills.gameObject.SetActive(false);
+		backSkills.gameObject.SetActive(true);
+
+	}
+	public void hideSkillButtons()
 	{
 		buttonAttack.gameObject.SetActive(false);
+		buttonAttack2.gameObject.SetActive(false);
 		buttonHeal.gameObject.SetActive(false);
+		buttonGreatHeal.gameObject.SetActive(false);
+		buttonOffenseSkills.gameObject.SetActive(false);
+		buttonDefenseSkills.gameObject.SetActive(false);
+		backSkills.gameObject.SetActive(false);
+
 	}
 
-	void showSkillButtons()
+	public void showSkillButtons()
 	{
-		buttonAttack.gameObject.SetActive(true);
-		buttonHeal.gameObject.SetActive(true);
+		playerAC.SetInteger("offenseStance", 0);
+
+//		playerAC.SetTrigger("iddleStance");
+		
+		buttonHeal.gameObject.SetActive(false);
+		buttonAttack.gameObject.SetActive(false);
+
+		buttonAttack2.gameObject.SetActive(false);
+		buttonGreatHeal.gameObject.SetActive(false);
+
+		buttonOffenseSkills.gameObject.SetActive(true);
+		buttonDefenseSkills.gameObject.SetActive(true);
+		backSkills.gameObject.SetActive(false);
+
 	}
 
-	
+
 
 	IEnumerator PlayerHeal()
 	{
@@ -323,6 +385,12 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(PlayerHeal());
 	}
 
+public void playSound()
+	{
+		AudioSource audio=GetComponent<AudioSource>();
+		
+		audio.PlayOneShot(song, 1);
+	}
 
 	}
 
