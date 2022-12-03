@@ -15,7 +15,7 @@ public class BattleSystem : MonoBehaviour
 
 	//public Transform playerBattleStation;
 	//public Transform enemyBattleStation;
-
+ [Header("Cameras")]
 	public GameObject mainCam;
 	Animator camAnimator;
 	Unit playerUnit;
@@ -25,7 +25,7 @@ public class BattleSystem : MonoBehaviour
 	public BattleHUD enemyHUD;
 
 	public BattleState state;
-
+	 [Header("GameObjects")]
 	public GameObject playerGO;
 	public GameObject enemyGO;
 
@@ -33,7 +33,7 @@ public class BattleSystem : MonoBehaviour
 
 	public GameObject player;
 	public GameObject enemy;
-
+ [Header("Animators")]
 	Animator playerAC;
 	Animator enemyAC;
 	//personas
@@ -48,6 +48,7 @@ public class BattleSystem : MonoBehaviour
 
 	public Text dialogText;
 	//UI
+	 [Header("Buttons")]
 	public Button buttonAttack;
 	public Button buttonAttack2;
 
@@ -56,7 +57,12 @@ public class BattleSystem : MonoBehaviour
 
 	public Button buttonOffenseSkills;
 	public Button buttonDefenseSkills;
+	public Button escapeBtn;
 	public Button backSkills;
+
+	public GameObject dialogPanel;
+	public GameObject combatPanel;
+
 
 
 
@@ -84,6 +90,9 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator SetupBattle()
 	{
+		hideSkillButtons();
+		dialogPanel.gameObject.SetActive(true);
+
 		//GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
 		playerUnit = playerGO.GetComponent<Unit>();
 
@@ -95,12 +104,12 @@ public class BattleSystem : MonoBehaviour
 		//playerHUD.SetHUD(playerUnit);
 		//enemyHUD.SetHUD(enemyUnit);
 
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(0.5f);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 		showSkillButtons();
-		dialogText.gameObject.SetActive(false);
+		dialogPanel.gameObject.SetActive(false);
 
 	}
 
@@ -115,7 +124,7 @@ public class BattleSystem : MonoBehaviour
 
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
-		dialogText.gameObject.SetActive(true);
+		dialogPanel.gameObject.SetActive(true);
 		dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
 
 		//persona (skeleton) events
@@ -126,7 +135,7 @@ public class BattleSystem : MonoBehaviour
 		yield return new WaitForSeconds(2f);
 		skeletonCameraws.SetActive(false);
 		skeleton.SetActive(false);
-		dialogText.gameObject.SetActive(false);
+		dialogPanel.gameObject.SetActive(false);
 
 	    camAnimator.Play("idleCam1", 0, 0.25f);
 
@@ -141,6 +150,24 @@ public class BattleSystem : MonoBehaviour
 			StartCoroutine(EnemyTurn());
 		}
 	}
+
+	IEnumerator EscapeAttempt()
+	{
+		hideSkillButtons();
+		
+		dialogPanel.gameObject.SetActive(true);
+		dialogText.text = "Can't escape this battle. Time to face your demons.";
+
+		//quan acabi la animacio desapareix amb fade out
+		yield return new WaitForSeconds(3f);
+	
+		dialogPanel.gameObject.SetActive(false);
+
+	    //camAnimator.Play("idleCam1", 0, 0.25f);
+		showSkillButtons();
+		
+	}
+
 
 	IEnumerator EnemyTurn()
 	{
@@ -160,12 +187,13 @@ public class BattleSystem : MonoBehaviour
 		}
 
 		
-		dialogText.gameObject.SetActive(true);
+		dialogPanel.gameObject.SetActive(true);
 		int damageMultiplier=1;
 		switch(attackChosen)
 		{
 		case 1:
 		dialogText.text = enemyUnit.unitName + " is focusing...";
+		personaEnemy.SetActive(true);
 		isFocused=true;
 		Debug.Log("atac: " + attackChosen);
 		//particules
@@ -223,11 +251,15 @@ public class BattleSystem : MonoBehaviour
 		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
 		
 		switch(attackChosen){
+			case 1:
+		personaEnemy.GetComponent<Animator>().SetTrigger("focus");
+
+			break;
 			case 2:
 		personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 			break;
 			case 3:
-				enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
+			enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
 
 			//super attack animacio	personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 			break;
@@ -241,10 +273,11 @@ public class BattleSystem : MonoBehaviour
 		else
 		{
 			isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
+			//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
 			dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
 
 			yield return new WaitForSeconds(2f);
-			dialogText.gameObject.SetActive(false);
+			dialogPanel.gameObject.SetActive(false);
 
 			enemyPersonaCam.SetActive(false);
 			personaEnemy.SetActive(false);
@@ -284,7 +317,7 @@ public class BattleSystem : MonoBehaviour
 	void PlayerTurn()
 	{
 		//dialogText.text = "Choose an action:";
-		dialogText.gameObject.SetActive(false);
+		dialogPanel.gameObject.SetActive(false);
 		showSkillButtons();
 	}
 
@@ -302,7 +335,7 @@ public class BattleSystem : MonoBehaviour
 
 		buttonOffenseSkills.gameObject.SetActive(false);
 		buttonDefenseSkills.gameObject.SetActive(false);
-
+		escapeBtn.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(true);
 	}
 	public void showDefenseSkills()
@@ -317,17 +350,21 @@ public class BattleSystem : MonoBehaviour
 
 		buttonOffenseSkills.gameObject.SetActive(false);
 		buttonDefenseSkills.gameObject.SetActive(false);
+		escapeBtn.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(true);
 
 	}
 	public void hideSkillButtons()
 	{
+			combatPanel.gameObject.SetActive(false);
+
 		buttonAttack.gameObject.SetActive(false);
 		buttonAttack2.gameObject.SetActive(false);
 		buttonHeal.gameObject.SetActive(false);
 		buttonGreatHeal.gameObject.SetActive(false);
 		buttonOffenseSkills.gameObject.SetActive(false);
 		buttonDefenseSkills.gameObject.SetActive(false);
+		escapeBtn.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(false);
 
 	}
@@ -335,6 +372,7 @@ public class BattleSystem : MonoBehaviour
 	public void showSkillButtons()
 	{
 		playerAC.SetInteger("offenseStance", 0);
+			combatPanel.gameObject.SetActive(true);
 
 //		playerAC.SetTrigger("iddleStance");
 		
@@ -346,6 +384,7 @@ public class BattleSystem : MonoBehaviour
 
 		buttonOffenseSkills.gameObject.SetActive(true);
 		buttonDefenseSkills.gameObject.SetActive(true);
+		escapeBtn.gameObject.SetActive(true);		
 		backSkills.gameObject.SetActive(false);
 
 	}
@@ -356,11 +395,20 @@ public class BattleSystem : MonoBehaviour
 	{
 		hideSkillButtons();
 		int amountHealed=5;
-		playerUnit.Heal(amountHealed);
-		playerHUD.SetHP(playerUnit.currentHP);
-		dialogText.gameObject.SetActive(true);
-		dialogText.text = "You recover " + amountHealed + "HP!";
-		personaPlayerAC.SetTrigger("heal");
+		dialogPanel.gameObject.SetActive(true);
+		
+		if(playerUnit.currentHP==playerUnit.maxHP)
+		{
+			dialogText.text = "Already full HP!";
+		}
+		else
+		{
+			playerUnit.Heal(amountHealed);
+			playerHUD.SetHP(playerUnit.currentHP);
+			dialogText.text = "You recover " + amountHealed + "HP!";
+			personaPlayerAC.SetTrigger("heal");
+
+		}
 
 		yield return new WaitForSeconds(2f);
 		dialogText.gameObject.SetActive(false);
@@ -372,7 +420,7 @@ public class BattleSystem : MonoBehaviour
 		IEnumerator PlayerBigHealAttempt()
 	{
 		hideSkillButtons();
-		//1 exit, ña resta fail
+		//1 exit, la resta fail
 		int healingSuccess = Random.Range(1, 6);
 		int amountHealed;
 		if(healingSuccess==1){
@@ -380,17 +428,20 @@ public class BattleSystem : MonoBehaviour
 			amountHealed=playerUnit.maxHP-playerUnit.currentHP;
 			playerUnit.Heal(amountHealed);
 			playerHUD.SetHP(playerUnit.currentHP);
-			dialogText.gameObject.SetActive(true);
+			combatPanel.gameObject.SetActive(false);
+
+			dialogPanel.gameObject.SetActive(true);
 			dialogText.text = "Super recovery heals you fully! You recover " + amountHealed + "HP!";
 		personaPlayerAC.SetTrigger("heal");
 		}
 		else{
-			dialogText.gameObject.SetActive(true);
+			combatPanel.gameObject.SetActive(false);
+			dialogPanel.gameObject.SetActive(true);
 			dialogText.text = "Healing failed";
 		}
 		
 		yield return new WaitForSeconds(2f);
-		dialogText.gameObject.SetActive(false);
+		dialogPanel.gameObject.SetActive(false);
 
 		state = BattleState.ENEMYTURN;
 		StartCoroutine(EnemyTurn());
@@ -418,6 +469,14 @@ public class BattleSystem : MonoBehaviour
 
 		StartCoroutine(PlayerBigHealAttempt());
 	}
+	public void OnEscapeButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(EscapeAttempt());
+	}
+
 
 public void playSound()
 	{
