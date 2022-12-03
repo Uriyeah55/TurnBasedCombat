@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+
 using UnityEngine.UI;
 
 
@@ -9,7 +11,12 @@ public enum BattleState {START,PLAYERTURN,ENEMYTURN,WON,LOST}
 public class BattleSystem : MonoBehaviour
 {
 
-	public AudioClip song;
+ [Header("Audio")]
+
+	AudioSource mainAudioSource;
+	public AudioClip[] soundsArray;
+	public GameObject audioBGMobject;
+
 	//public GameObject playerPrefab;
 	//public GameObject enemyPrefab;
 
@@ -45,6 +52,7 @@ public class BattleSystem : MonoBehaviour
 	public GameObject skeletonCameraws;
 	public GameObject enemyPersonaCam;
 
+	public Text actorText;
 
 	public Text dialogText;
 	//UI
@@ -67,8 +75,8 @@ public class BattleSystem : MonoBehaviour
 
 
 	bool isFocused=false;
-	bool turnFocusedPassed=false;
-	int temporalDamageEnemy=0;
+	//bool turnFocusedPassed=false;
+	//int temporalDamageEnemy=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +87,11 @@ public class BattleSystem : MonoBehaviour
 		personaPlayerAC= skeleton.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
 		enemyAC=enemy.GetComponent<Animator>();
+
+		mainAudioSource = this.gameObject.GetComponent<AudioSource>();
+        //collision2 = audiosVoice[1];
+        //collision3 = audiosVoice[2];
+        //collision4 = audiosVoice[3];
 		
 		
 		state = BattleState.START;
@@ -90,26 +103,32 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator SetupBattle()
 	{
+		//yield return new WaitForSeconds(0.5f);
+
 		hideSkillButtons();
 		dialogPanel.gameObject.SetActive(true);
-
+		dialogText.text = "It's about time... I taught you a lesson!";
+		//Adachi line
+		playSound(0);
 		//GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
 		playerUnit = playerGO.GetComponent<Unit>();
 
 		//GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
-		dialogText.text = enemyUnit.unitName + " busca problemas";
 
 		//playerHUD.SetHUD(playerUnit);
 		//enemyHUD.SetHUD(enemyUnit);
 
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(3.8f);
+		audioBGMobject.gameObject.SetActive(true);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 		showSkillButtons();
 		dialogPanel.gameObject.SetActive(false);
+		actorText.enabled=false;
+
 
 	}
 
@@ -324,7 +343,7 @@ public class BattleSystem : MonoBehaviour
 	//### SHOW AND HIDE UI ###
 	public void showOffensiveSkills()
 	{
-		playSound();
+		
 		playerAC.SetInteger("offenseStance", 1);
 		//playerAC.SetTrigger("offenseStance");
 		buttonAttack.gameObject.SetActive(true);
@@ -394,6 +413,8 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator PlayerHeal()
 	{
 		hideSkillButtons();
+		playerAC.SetTrigger("heal");
+
 		int amountHealed=5;
 		dialogPanel.gameObject.SetActive(true);
 		
@@ -403,15 +424,15 @@ public class BattleSystem : MonoBehaviour
 		}
 		else
 		{
+			//playerAC.SetTrigger("heal");
 			playerUnit.Heal(amountHealed);
 			playerHUD.SetHP(playerUnit.currentHP);
 			dialogText.text = "You recover " + amountHealed + "HP!";
 			personaPlayerAC.SetTrigger("heal");
 
 		}
-
-		yield return new WaitForSeconds(2f);
-		dialogText.gameObject.SetActive(false);
+		yield return new WaitForSeconds(1.5f);
+		dialogPanel.gameObject.SetActive(false);
 
 		state = BattleState.ENEMYTURN;
 		StartCoroutine(EnemyTurn());
@@ -478,11 +499,14 @@ public class BattleSystem : MonoBehaviour
 	}
 
 
-public void playSound()
+public void playSound(int clipPosition)
 	{
-		AudioSource audio=GetComponent<AudioSource>();
+	
+         mainAudioSource.clip = soundsArray[clipPosition];
+         mainAudioSource.Play();
+		//AudioSource audio=GetComponent<AudioSource>();
 		
-		audio.PlayOneShot(song, 1);
+		//audio.PlayOneShot(song, 1);
 	}
 
 	}
