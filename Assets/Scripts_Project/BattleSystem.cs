@@ -35,6 +35,9 @@ public class BattleSystem : MonoBehaviour
 	 [Header("GameObjects")]
 	public GameObject playerGO;
 	public GameObject enemyGO;
+		//personas
+	public GameObject skeleton;
+	public GameObject personaEnemy;
 
 	Animator personaPlayerAC;
 
@@ -43,19 +46,17 @@ public class BattleSystem : MonoBehaviour
  [Header("Animators")]
 	Animator playerAC;
 	Animator enemyAC;
-	//personas
-	public GameObject skeleton;
-	public GameObject personaEnemy;
+
 
 
 	//cameras
 	public GameObject skeletonCameraws;
 	public GameObject enemyPersonaCam;
 
+	 [Header("Texts")]
 	public Text actorText;
-
 	public Text dialogText;
-	//UI
+	//UI 
 	 [Header("Buttons")]
 	public Button buttonAttack;
 	public Button buttonAttack2;
@@ -70,6 +71,9 @@ public class BattleSystem : MonoBehaviour
 
 	public GameObject dialogPanel;
 	public GameObject combatPanel;
+	public Image attackAnnouncer;
+	public Text textAttackAnnouncer;
+
 
 
 
@@ -82,8 +86,8 @@ public class BattleSystem : MonoBehaviour
     {
 		hideSkillButtons();
 		camAnimator= mainCam.gameObject.GetComponent<Animator>();
-		skeleton.SetActive(false);
-	 	personaEnemy.SetActive(false);
+
+
 		personaPlayerAC= skeleton.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
 		enemyAC=enemy.GetComponent<Animator>();
@@ -99,29 +103,30 @@ public class BattleSystem : MonoBehaviour
     }
 	void Update(){
 		Debug.Log("alfonso damage: " + enemyUnit.damage);
+		Debug.Log("player HP: " + playerUnit.currentHP);
 	}
 
 	IEnumerator SetupBattle()
 	{
+		attackAnnouncer.enabled=false;
+		textAttackAnnouncer.enabled=false;
 		//yield return new WaitForSeconds(0.5f);
 
 		hideSkillButtons();
-		dialogPanel.gameObject.SetActive(true);
-		dialogText.text = "It's about time... I taught you a lesson!";
-		//Adachi line
-		playSound(0);
-		//GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-		playerUnit = playerGO.GetComponent<Unit>();
+		//dialogPanel.gameObject.SetActive(true);
+		//dialogText.text = "It's about time... I taught you a lesson!";
 
-		//GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+		//Adachi line
+		//playSound(0);
+		playerUnit = playerGO.GetComponent<Unit>();
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
 
 		//playerHUD.SetHUD(playerUnit);
 		//enemyHUD.SetHUD(enemyUnit);
 
-		yield return new WaitForSeconds(3.8f);
-		audioBGMobject.gameObject.SetActive(true);
+		yield return new WaitForSeconds(0.2f);
+		//audioBGMobject.gameObject.SetActive(true);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
@@ -153,11 +158,10 @@ public class BattleSystem : MonoBehaviour
 		//quan acabi la animacio desapareix amb fade out
 		yield return new WaitForSeconds(2f);
 		skeletonCameraws.SetActive(false);
-		skeleton.SetActive(false);
+		//skeleton.SetActive(false);
 		dialogPanel.gameObject.SetActive(false);
 
 	    camAnimator.Play("idleCam1", 0, 0.25f);
-
 
 		if(isDead)
 		{
@@ -184,7 +188,6 @@ public class BattleSystem : MonoBehaviour
 
 	    //camAnimator.Play("idleCam1", 0, 0.25f);
 		showSkillButtons();
-		
 	}
 
 
@@ -212,7 +215,7 @@ public class BattleSystem : MonoBehaviour
 		{
 		case 1:
 		dialogText.text = enemyUnit.unitName + " is focusing...";
-		personaEnemy.SetActive(true);
+		//personaEnemy.SetActive(true);
 		isFocused=true;
 		Debug.Log("atac: " + attackChosen);
 		//particules
@@ -226,7 +229,7 @@ public class BattleSystem : MonoBehaviour
 
 				yield return new WaitForSeconds(2f);
 
-				personaEnemy.SetActive(true);
+				//personaEnemy.SetActive(true);
 				enemyPersonaCam.SetActive(true);
 
 				enemyAC.GetComponent<Animator>().SetTrigger("attack");
@@ -242,7 +245,7 @@ public class BattleSystem : MonoBehaviour
 				dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
 				yield return new WaitForSeconds(2f);
 
-				personaEnemy.SetActive(true);
+				//personaEnemy.SetActive(true);
 				enemyPersonaCam.SetActive(true);
 
 				enemyAC.GetComponent<Animator>().SetTrigger("attack");
@@ -299,7 +302,7 @@ public class BattleSystem : MonoBehaviour
 			dialogPanel.gameObject.SetActive(false);
 
 			enemyPersonaCam.SetActive(false);
-			personaEnemy.SetActive(false);
+			//personaEnemy.SetActive(false);
 			playerHUD.SetHP(playerUnit.currentHP);
 
 		}
@@ -413,6 +416,9 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator PlayerHeal()
 	{
 		hideSkillButtons();
+		attackAnnouncer.enabled=true;
+		textAttackAnnouncer.enabled=true;
+		textAttackAnnouncer.text="Healing";
 		playerAC.SetTrigger("heal");
 
 		int amountHealed=5;
@@ -431,9 +437,10 @@ public class BattleSystem : MonoBehaviour
 			personaPlayerAC.SetTrigger("heal");
 
 		}
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(3f);
 		dialogPanel.gameObject.SetActive(false);
-
+		attackAnnouncer.enabled=false;
+		textAttackAnnouncer.enabled=false;
 		state = BattleState.ENEMYTURN;
 		StartCoroutine(EnemyTurn());
 	}
@@ -441,27 +448,54 @@ public class BattleSystem : MonoBehaviour
 		IEnumerator PlayerBigHealAttempt()
 	{
 		hideSkillButtons();
-		//1 exit, la resta fail
-		int healingSuccess = Random.Range(1, 6);
-		int amountHealed;
-		if(healingSuccess==1){
-			//full vida
-			amountHealed=playerUnit.maxHP-playerUnit.currentHP;
-			playerUnit.Heal(amountHealed);
-			playerHUD.SetHP(playerUnit.currentHP);
-			combatPanel.gameObject.SetActive(false);
 
+		playerAC.SetInteger("offenseStance",3);
+		
+
+		attackAnnouncer.enabled=true;
+		textAttackAnnouncer.enabled=true;
+		textAttackAnnouncer.text="Super Recovery";
+
+		yield return new WaitForSeconds(2f);
+		playerAC.SetInteger("offenseStance",0);
+
+		if(playerUnit.currentHP==playerUnit.maxHP)
+		{
 			dialogPanel.gameObject.SetActive(true);
-			dialogText.text = "Super recovery heals you fully! You recover " + amountHealed + "HP!";
-		personaPlayerAC.SetTrigger("heal");
+			dialogText.text = "Already at full HP!";	
 		}
-		else{
-			combatPanel.gameObject.SetActive(false);
-			dialogPanel.gameObject.SetActive(true);
-			dialogText.text = "Healing failed";
+		else
+		{
+			//1 exit, la resta fail
+			int healingSuccess = Random.Range(1, 6);
+	
+			int amountHealed;
+			if(healingSuccess==1)
+			{
+				//full vida
+				amountHealed=playerUnit.maxHP-playerUnit.currentHP;
+				playerUnit.Heal(amountHealed);
+				playerHUD.SetHP(playerUnit.currentHP);
+				combatPanel.gameObject.SetActive(false);
+
+				dialogPanel.gameObject.SetActive(true);
+				dialogText.text = "Super recovery heals you fully! You recover " + amountHealed + "HP!";
+				personaPlayerAC.SetInteger("offenseStance",3);
+				yield return new WaitForSeconds(2f);
+				personaPlayerAC.SetInteger("offenseStance",1);
+			}
+			else
+			{
+				combatPanel.gameObject.SetActive(false);
+				dialogPanel.gameObject.SetActive(true);
+				dialogText.text = "Healing failed";
+			}
 		}
 		
+		
 		yield return new WaitForSeconds(2f);
+		attackAnnouncer.enabled=false;
+		textAttackAnnouncer.enabled=false;
 		dialogPanel.gameObject.SetActive(false);
 
 		state = BattleState.ENEMYTURN;
