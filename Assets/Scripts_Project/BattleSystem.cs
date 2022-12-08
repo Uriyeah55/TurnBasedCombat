@@ -271,7 +271,7 @@ public class BattleSystem : MonoBehaviour
 
 				dialogText.text = "I'm already tired of this song!";
 		yield return new WaitForSeconds(2f);
-		BGMpanel.GetComponent<BGM_Selector>().playRandomEnemySong();
+		BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
 		actorText.enabled=false;
 
 				//alguna animacio a la UI de la tele?
