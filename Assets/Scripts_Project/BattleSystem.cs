@@ -16,6 +16,7 @@ public class BattleSystem : MonoBehaviour
 	AudioSource mainAudioSource;
 	public AudioClip[] soundsArray;
 	public GameObject audioBGMobject;
+	public GameObject BGMpanel;
 
 	//public GameObject playerPrefab;
 	//public GameObject enemyPrefab;
@@ -46,6 +47,7 @@ public class BattleSystem : MonoBehaviour
  [Header("Animators")]
 	Animator playerAC;
 	Animator enemyAC;
+		bool isDead; 
 
 
 
@@ -102,8 +104,8 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(SetupBattle());
     }
 	void Update(){
-		Debug.Log("alfonso damage: " + enemyUnit.damage);
-		Debug.Log("player HP: " + playerUnit.currentHP);
+	//	Debug.Log("alfonso damage: " + enemyUnit.damage);
+	//	Debug.Log("player HP: " + playerUnit.currentHP);
 	}
 
 	IEnumerator SetupBattle()
@@ -197,25 +199,24 @@ public class BattleSystem : MonoBehaviour
 		hideSkillButtons();
 
 		//decidir atack 1 focus 2 atack 3 super atack
-		int attackChosen = Random.Range(1, 4);
-		Debug.Log("random: " + attackChosen);
+		//int attackChosen = Random.Range(1, 5);
+		int attackChosen=4;
+//		Debug.Log("Alfonso random attack: " + attackChosen);
 
 		while (attackChosen==1 && isFocused)
 		{
 		//torna a calcular si toca focus i ja esta focus
  		attackChosen = Random.Range(1, 4);
 		Debug.Log("ha coincidit random i focused");
-
 		}
 
-		
 		dialogPanel.gameObject.SetActive(true);
+		//damageMultiplier will be used to determine if the enemy has buffs
 		int damageMultiplier=1;
 		switch(attackChosen)
 		{
 		case 1:
 		dialogText.text = enemyUnit.unitName + " is focusing...";
-		//personaEnemy.SetActive(true);
 		isFocused=true;
 		Debug.Log("atac: " + attackChosen);
 		//particules
@@ -224,20 +225,16 @@ public class BattleSystem : MonoBehaviour
 			//atac normal
 			if(isFocused)
 			{
-				//enemyUnit.damage *= 2;
 				dialogText.text = enemyUnit.unitName + " attacks with more energy! (atac 2 focused) 6 dmg";
 
 				yield return new WaitForSeconds(2f);
 
-				//personaEnemy.SetActive(true);
 				enemyPersonaCam.SetActive(true);
 
 				enemyAC.GetComponent<Animator>().SetTrigger("attack");
 				yield return new WaitForSeconds(2f);
 				isFocused=false;
 				damageMultiplier=2;
-				//reset damage
-				//enemyUnit.damage=enemyUnit.baseDamage * 2;
 
 			}
 			else
@@ -268,11 +265,26 @@ public class BattleSystem : MonoBehaviour
 				//enemyUnit.damage *= 2;
 			}
 			break;
+			case 4:
+					actorText.enabled=true;
+					actorText.text="Alfonso";
+
+				dialogText.text = "I'm already tired of this song!";
+		yield return new WaitForSeconds(2f);
+		BGMpanel.GetComponent<BGM_Selector>().playRandomEnemySong();
+		actorText.enabled=false;
+
+				//alguna animacio a la UI de la tele?
+
+			break;
 		}
 		
-		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
+//		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
 		
-		switch(attackChosen){
+
+		if(attackChosen != 4){
+
+switch(attackChosen){
 			case 1:
 		personaEnemy.GetComponent<Animator>().SetTrigger("focus");
 
@@ -288,7 +300,6 @@ public class BattleSystem : MonoBehaviour
 		}
 		
 		yield return new WaitForSeconds(1f);
-		bool isDead; 
 		if(isFocused){
 			isDead = playerUnit.TakeDamage(0);
 		}
@@ -307,6 +318,9 @@ public class BattleSystem : MonoBehaviour
 
 		}
 
+
+		}
+		
 		 //temporalDamageEnemy= enemyUnit.damage;
 		 //enemyUnit.damage=0;
 
@@ -535,13 +549,7 @@ public class BattleSystem : MonoBehaviour
 
 public void playSound(int clipPosition)
 	{
-	
          mainAudioSource.clip = soundsArray[clipPosition];
          mainAudioSource.Play();
-		//AudioSource audio=GetComponent<AudioSource>();
-		
-		//audio.PlayOneShot(song, 1);
 	}
-
-	}
-
+}
