@@ -9,7 +9,6 @@ public class BGM_Selector : MonoBehaviour
     public AudioClip[] BGM_tracks;
     public AudioClip[] enemy_BGM_tracks;
     AudioClip currentEnemySong;
-    bool firstCall=true;
     AudioSource audioS;
     int currentIndex=0;
     int currentEnemyIndex=0;
@@ -21,6 +20,7 @@ public class BGM_Selector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentSongName.color= Color.black;
         BGM_tracks[1].name.Replace('s', 'G');
         audioS=GetComponent<AudioSource>();
         audioS.clip = BGM_tracks[currentIndex];
@@ -54,6 +54,8 @@ public class BGM_Selector : MonoBehaviour
          BattleSystemGO.GetComponent<BattleSystem>().startEnemyTurn();
          BattleSystemGO.GetComponent<BattleSystem>().hideAudioButtons();
          updateSongText(BGM_tracks[currentIndex].name);
+        currentSongName.color= Color.black;
+
     }
        public void SubstractIndex()
     {
@@ -68,10 +70,15 @@ public class BGM_Selector : MonoBehaviour
          BattleSystemGO.GetComponent<BattleSystem>().state= BattleState.ENEMYTURN;
          BattleSystemGO.GetComponent<BattleSystem>().startEnemyTurn();
          BattleSystemGO.GetComponent<BattleSystem>().hideAudioButtons();
+
+        updateSongText(BGM_tracks[currentIndex].name);
+        currentSongName.color= Color.black;
+
+
     }
     public void playEnemySong()
     {
-currentEnemyIndex++;
+        currentEnemyIndex++;
 
         if(currentEnemyIndex >= enemy_BGM_tracks.Length)
         {
@@ -79,6 +86,9 @@ currentEnemyIndex++;
         }
          audioS.clip = enemy_BGM_tracks[currentEnemyIndex];
          audioS.Play();
+        updateSongText(enemy_BGM_tracks[currentEnemyIndex].name.ToString());
+        currentSongName.color= Color.red;
+
     }
     public void updateSongText(string name)
     {

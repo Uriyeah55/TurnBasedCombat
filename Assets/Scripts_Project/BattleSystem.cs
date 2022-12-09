@@ -199,15 +199,17 @@ public class BattleSystem : MonoBehaviour
 		
 		hideSkillButtons();
 
-		//decidir atack 1 focus 2 atack 3 super atack
-		//int attackChosen = Random.Range(1, 5);
-		int attackChosen=4;
+		//decidir atack 1 focus 2 atack 3 super atack 4 canviar song
+		int attackChosen = Random.Range(1, 5);
+		attackChosen = 4;
+
+		
 //		Debug.Log("Alfonso random attack: " + attackChosen);
 
 		while (attackChosen==1 && isFocused)
 		{
 		//torna a calcular si toca focus i ja esta focus
- 		attackChosen = Random.Range(1, 4);
+ 		attackChosen = Random.Range(1, 5);
 		Debug.Log("ha coincidit random i focused");
 		}
 
@@ -267,12 +269,13 @@ public class BattleSystem : MonoBehaviour
 			}
 			break;
 			case 4:
-					actorText.enabled=true;
-					actorText.text="Alfonso";
+				actorText.enabled=true;
+				actorText.text="Alfonso";
 				dialogText.text = "I'm already tired of this song!";
-		yield return new WaitForSeconds(2f);
-		BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
-		actorText.enabled=false;
+				yield return new WaitForSeconds(3.2f);
+				BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
+				actorText.enabled=false;
+				combatPanel.SetActive(false);
 
 				//alguna animacio a la UI de la tele?
 
@@ -281,44 +284,40 @@ public class BattleSystem : MonoBehaviour
 		
 //		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
 		
-
-		if(attackChosen != 4){
-
-switch(attackChosen){
-			case 1:
-		personaEnemy.GetComponent<Animator>().SetTrigger("focus");
-
-			break;
-			case 2:
-		personaEnemy.GetComponent<Animator>().SetTrigger("attack");
-			break;
-			case 3:
-			enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
-
-			//super attack animacio	personaEnemy.GetComponent<Animator>().SetTrigger("attack");
-			break;
-		}
-		
-		yield return new WaitForSeconds(1f);
-		if(isFocused){
-			isDead = playerUnit.TakeDamage(0);
-		}
-		else
+		//si canvia la canço no volem que ataqui
+		if(attackChosen != 4)
 		{
-			isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
-			//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
-			dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
-
+			switch(attackChosen)
+			{		
+				case 1:
+			personaEnemy.GetComponent<Animator>().SetTrigger("focus");
+				break;
+				case 2:
+			personaEnemy.GetComponent<Animator>().SetTrigger("attack");
+				break;
+				case 3:
+				enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
+				break;
+			}
+			
 			yield return new WaitForSeconds(2f);
-			dialogPanel.gameObject.SetActive(false);
+			if(isFocused){
+				isDead = playerUnit.TakeDamage(0);
+			}
+			else
+			{
+				isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
+				//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
+				dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
 
-			enemyPersonaCam.SetActive(false);
-			//personaEnemy.SetActive(false);
-			playerHUD.SetHP(playerUnit.currentHP);
+				yield return new WaitForSeconds(2f);
+				dialogPanel.gameObject.SetActive(false);
 
-		}
-
-
+				enemyPersonaCam.SetActive(false);
+				//personaEnemy.SetActive(false);
+				playerHUD.SetHP(playerUnit.currentHP);
+			}
+			yield return new WaitForSeconds(1f);
 		}
 		
 		 //temporalDamageEnemy= enemyUnit.damage;
@@ -326,7 +325,6 @@ switch(attackChosen){
 
 		
 
-		yield return new WaitForSeconds(1f);
 
 		if(isDead)
 		{
