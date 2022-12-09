@@ -4021,6 +4021,8 @@ MonoBehaviour:
   combatPanel: {fileID: 1224429525}
   attackAnnouncer: {fileID: 730514676}
   textAttackAnnouncer: {fileID: 573409225}
+  previousSongButton: {fileID: 1283653845}
+  nextSongButton: {fileID: 1517328904}
 --- !u!4 &889164374
 Transform:
   m_ObjectHideFlags: 0
@@ -6934,13 +6936,16 @@ MonoBehaviour:
   currentSongName: {fileID: 611754336}
   BGM_tracks:
   - {fileID: 8300000, guid: 7ca4b68fdfc133249b4ae7c80e9bb64e, type: 3}
-  - {fileID: 8300000, guid: 354d99acdbf8ec149aae0b3d238b5294, type: 3}
+  - {fileID: 8300000, guid: 0a40f05cd7ff98a4c9e394caf767fa65, type: 3}
   - {fileID: 8300000, guid: 3ea13154fc6076d42b118e0cd7adf918, type: 3}
   - {fileID: 8300000, guid: 5de2e308abbdf104a934a13535e15c1f, type: 3}
   - {fileID: 8300000, guid: e9e47a29709de89469ff2955496100d4, type: 3}
   enemy_BGM_tracks:
   - {fileID: 8300000, guid: 248889111f8605e4585386bf129eb7c3, type: 3}
   - {fileID: 8300000, guid: 6570d1d0bc6df1b44afa96ec384e2561, type: 3}
+  - {fileID: 8300000, guid: 057f43f85a09e3d4480795b1d6539160, type: 3}
+  - {fileID: 8300000, guid: db6dd4f1dcd090144b8916c39e45785a, type: 3}
+  BattleSystemGO: {fileID: 889164372}
 --- !u!82 &1927361659
 AudioSource:
   m_ObjectHideFlags: 0

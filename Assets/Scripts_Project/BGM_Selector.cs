@@ -14,24 +14,24 @@ public class BGM_Selector : MonoBehaviour
     int currentIndex=0;
     int currentEnemyIndex=0;
 
+    public GameObject BattleSystemGO;
+
    // int enemyBGMcurrentIndex=0;
 
     // Start is called before the first frame update
     void Start()
     {
+        BGM_tracks[1].name.Replace('s', 'G');
         audioS=GetComponent<AudioSource>();
         audioS.clip = BGM_tracks[currentIndex];
         audioS.Play();
    
-
+        updateSongText(audioS.clip.name.ToString());
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentSongName.text= audioS.clip.ToString();
-        Debug.Log("size songs enem" + enemy_BGM_tracks.Length);
-        Debug.Log("enemy index" + currentEnemyIndex);
 
     }
     public void playSound(int clipPosition)
@@ -50,17 +50,24 @@ public class BGM_Selector : MonoBehaviour
         }
          audioS.clip = BGM_tracks[currentIndex];
          audioS.Play();
+         BattleSystemGO.GetComponent<BattleSystem>().state= BattleState.ENEMYTURN;
+         BattleSystemGO.GetComponent<BattleSystem>().startEnemyTurn();
+         BattleSystemGO.GetComponent<BattleSystem>().hideAudioButtons();
+         updateSongText(BGM_tracks[currentIndex].name);
     }
        public void SubstractIndex()
     {
 
         currentIndex--;
-        if(currentIndex <= 0)
+        if(currentIndex < 0)
         {
-            currentIndex=BGM_tracks.Length;
+            currentIndex=BGM_tracks.Length-1;
         }
          audioS.clip = BGM_tracks[currentIndex];
          audioS.Play();
+         BattleSystemGO.GetComponent<BattleSystem>().state= BattleState.ENEMYTURN;
+         BattleSystemGO.GetComponent<BattleSystem>().startEnemyTurn();
+         BattleSystemGO.GetComponent<BattleSystem>().hideAudioButtons();
     }
     public void playEnemySong()
     {
@@ -72,6 +79,11 @@ currentEnemyIndex++;
         }
          audioS.clip = enemy_BGM_tracks[currentEnemyIndex];
          audioS.Play();
+    }
+    public void updateSongText(string name)
+    {
+        name.Replace("(UnityEngine.AudioClip)","");
+        currentSongName.text=name;
     }
 }
      

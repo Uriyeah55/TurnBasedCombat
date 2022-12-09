@@ -76,7 +76,8 @@ public class BattleSystem : MonoBehaviour
 	public Image attackAnnouncer;
 	public Text textAttackAnnouncer;
 
-
+	public GameObject previousSongButton;
+	public GameObject nextSongButton;
 
 
 
@@ -268,7 +269,6 @@ public class BattleSystem : MonoBehaviour
 			case 4:
 					actorText.enabled=true;
 					actorText.text="Alfonso";
-
 				dialogText.text = "I'm already tired of this song!";
 		yield return new WaitForSeconds(2f);
 		BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
@@ -355,6 +355,7 @@ switch(attackChosen){
 		//dialogText.text = "Choose an action:";
 		dialogPanel.gameObject.SetActive(false);
 		showSkillButtons();
+		showAudioButtons();
 	}
 
 	//### SHOW AND HIDE UI ###
@@ -404,11 +405,21 @@ switch(attackChosen){
 		backSkills.gameObject.SetActive(false);
 
 	}
+	public void hideAudioButtons()
+	{
+		previousSongButton.gameObject.SetActive(false);
+		nextSongButton.gameObject.SetActive(false);
+	}
+	public void showAudioButtons()
+	{
+		previousSongButton.gameObject.SetActive(true);
+		nextSongButton.gameObject.SetActive(true);
+	}
 
 	public void showSkillButtons()
 	{
 		playerAC.SetInteger("offenseStance", 0);
-			combatPanel.gameObject.SetActive(true);
+		combatPanel.gameObject.SetActive(true);
 
 //		playerAC.SetTrigger("iddleStance");
 		
@@ -551,5 +562,9 @@ public void playSound(int clipPosition)
 	{
          mainAudioSource.clip = soundsArray[clipPosition];
          mainAudioSource.Play();
+	}
+	//method called from other scripts to start the coroutine
+	public void startEnemyTurn(){
+		StartCoroutine(EnemyTurn());
 	}
 }
