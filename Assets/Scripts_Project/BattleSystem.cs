@@ -50,8 +50,6 @@ public class BattleSystem : MonoBehaviour
 	Animator enemyAC;
 		bool isDead; 
 
-
-
 	//cameras
 	public GameObject skeletonCameraws;
 	public GameObject enemyPersonaCam;
@@ -152,18 +150,19 @@ public class BattleSystem : MonoBehaviour
 		showAttackName("Attack");
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
-		dialogPanel.gameObject.SetActive(true);
-		dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
+		//dialogPanel.gameObject.SetActive(true);
+		//dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
 
 		//persona (skeleton) events
 		skeletonCameraws.SetActive(true);
 		personaPlayerAC.SetTrigger("attack");
 
-		//quan acabi la animacio desapareix amb fade out
 		yield return new WaitForSeconds(2f);
+		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
 		skeletonCameraws.SetActive(false);
 		//skeleton.SetActive(false);
-		dialogPanel.gameObject.SetActive(false);
+		//dialogPanel.gameObject.SetActive(false);
 
 	    camAnimator.Play("idleCam1", 0, 0.25f);
 
@@ -293,6 +292,9 @@ public class BattleSystem : MonoBehaviour
 
 			break;
 		}
+		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
+
 		
 //		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
 		
@@ -320,7 +322,7 @@ public class BattleSystem : MonoBehaviour
 			{
 				isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
 				//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
-				dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
+				//dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
 
 				yield return new WaitForSeconds(2f);
 				dialogPanel.gameObject.SetActive(false);
@@ -335,6 +337,8 @@ public class BattleSystem : MonoBehaviour
 		 //temporalDamageEnemy= enemyUnit.damage;
 		 //enemyUnit.damage=0;
 
+		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
 		
 
 
@@ -489,6 +493,7 @@ public class BattleSystem : MonoBehaviour
 		yield return new WaitForSeconds(2f);
 		playerAC.SetInteger("offenseStance",0);
 		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
 
 		if(playerUnit.currentHP==playerUnit.maxHP)
 		{
@@ -527,6 +532,7 @@ public class BattleSystem : MonoBehaviour
 		yield return new WaitForSeconds(2f);
 		attackAnnouncer.enabled=false;
 		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
 		dialogPanel.gameObject.SetActive(false);
 
 		state = BattleState.ENEMYTURN;

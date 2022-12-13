@@ -5,7 +5,8 @@ using UnityEngine;
  public class FadeAlpha : MonoBehaviour {
      [SerializeField] private float fadePerSecond = 2.5f;
  
-     private void Update() {
+     private void Update() 
+     {
          var material = GetComponent<Renderer>().material;
          var color = material.color;
  
