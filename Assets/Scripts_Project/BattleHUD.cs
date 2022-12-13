@@ -10,19 +10,23 @@ public class BattleHUD : MonoBehaviour
 	//public Text nameText;
 	//public Text levelText;
 	public Text hpText;
+	public Text BackgroundText;
+
 
 	public void SetHUD(Unit unit)
 	{
 	//	nameText.text = unit.unitName;
 		//levelText.text = "Lvl " + unit.unitLevel;
         hpText.text=unit.maxHP.ToString();
+		BackgroundText.text=unit.maxHP.ToString();
 		//hpSlider.maxValue = unit.maxHP;
 		//hpSlider.value = unit.currentHP;
 	}
 
 	public void SetHP(int hp)
 	{
-		hpText.text = hp.ToString();;
+		hpText.text = hp.ToString();
+		BackgroundText.text = hp.ToString();
 	}
 
 }

@@ -25,6 +25,7 @@ public class BattleSystem : MonoBehaviour
 	//public Transform enemyBattleStation;
  [Header("Cameras")]
 	public GameObject mainCam;
+	public GameObject enemyCam;
 	Animator camAnimator;
 	Unit playerUnit;
 	Unit enemyUnit;
@@ -148,7 +149,7 @@ public class BattleSystem : MonoBehaviour
 		//check if finishes enemy
 		skeleton.SetActive(true);
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-
+		showAttackName("Attack");
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogPanel.gameObject.SetActive(true);
@@ -228,6 +229,7 @@ public class BattleSystem : MonoBehaviour
 			//atac normal
 			if(isFocused)
 			{
+				showAttackName("Focused attack");
 				dialogText.text = enemyUnit.unitName + " attacks with more energy! (atac 2 focused) 6 dmg";
 
 				yield return new WaitForSeconds(2f);
@@ -242,6 +244,7 @@ public class BattleSystem : MonoBehaviour
 			}
 			else
 			{
+				showAttackName("Tackle");
 				dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
 				yield return new WaitForSeconds(2f);
 
@@ -255,6 +258,7 @@ public class BattleSystem : MonoBehaviour
 			case 3:
 			if(isFocused)
 			{
+				showAttackName("Charged Curse");
 				dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit! (atac 3 focused) 12 damage";
 				damageMultiplier=4;
 				//enemyUnit.damage *= 4;
@@ -262,7 +266,9 @@ public class BattleSystem : MonoBehaviour
 				//reiniciem damage
 				//enemyUnit.damage=enemyUnit.baseDamage;
 			}
-			else{
+			else
+			{
+				showAttackName("Strong will");
 				dialogText.text = enemyUnit.unitName + " charges with a strong attack! (atac 3 NO focused) 6 damage";
 				damageMultiplier=2;
 				//enemyUnit.damage *= 2;
@@ -272,11 +278,17 @@ public class BattleSystem : MonoBehaviour
 				actorText.enabled=true;
 				actorText.text="Alfonso";
 				dialogText.text = "I'm already tired of this song!";
-				yield return new WaitForSeconds(3.2f);
-				BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
+				yield return new WaitForSeconds(2f);
 				actorText.enabled=false;
 				combatPanel.SetActive(false);
-
+				enemyCam.SetActive(true);
+				playSound(2);
+				enemyAC.GetComponent<Animator>().SetTrigger("changeSong");
+				yield return new WaitForSeconds(0.4f);
+				BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
+				yield return new WaitForSeconds(1f);
+			
+				enemyCam.SetActive(false);
 				//alguna animacio a la UI de la tele?
 
 			break;
@@ -439,9 +451,7 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator PlayerHeal()
 	{
 		hideSkillButtons();
-		attackAnnouncer.enabled=true;
-		textAttackAnnouncer.enabled=true;
-		textAttackAnnouncer.text="Healing";
+		showAttackName("Healing");
 		playerAC.SetTrigger("heal");
 
 		int amountHealed=5;
@@ -474,13 +484,11 @@ public class BattleSystem : MonoBehaviour
 
 		playerAC.SetInteger("offenseStance",3);
 		
-
-		attackAnnouncer.enabled=true;
-		textAttackAnnouncer.enabled=true;
-		textAttackAnnouncer.text="Super Recovery";
+		showAttackName("Super Recovery");
 
 		yield return new WaitForSeconds(2f);
 		playerAC.SetInteger("offenseStance",0);
+		textAttackAnnouncer.enabled=false;
 
 		if(playerUnit.currentHP==playerUnit.maxHP)
 		{
@@ -555,8 +563,14 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(EscapeAttempt());
 	}
 
+	public void showAttackName(string attackName)
+	{
+		attackAnnouncer.enabled=true;
+		textAttackAnnouncer.enabled=true;
+		textAttackAnnouncer.text=attackName;
+	}
 
-public void playSound(int clipPosition)
+	public void playSound(int clipPosition)
 	{
          mainAudioSource.clip = soundsArray[clipPosition];
          mainAudioSource.Play();
