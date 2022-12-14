@@ -19,7 +19,7 @@ public class BGM_Selector : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {/*
         currentSongName.color= Color.black;
         BGM_tracks[1].name.Replace('s', 'G');
         audioS=GetComponent<AudioSource>();
@@ -27,6 +27,7 @@ public class BGM_Selector : MonoBehaviour
         audioS.Play();
    
         updateSongText(audioS.clip.name.ToString());
+        */
     }
 
     // Update is called once per frame
@@ -94,6 +95,15 @@ public class BGM_Selector : MonoBehaviour
     {
         name.Replace("(UnityEngine.AudioClip)","");
         currentSongName.text=name;
+    }
+    public void startGame(){
+        currentSongName.color= Color.black;
+        BGM_tracks[1].name.Replace('s', 'G');
+        audioS=GetComponent<AudioSource>();
+        audioS.clip = BGM_tracks[currentIndex];
+        audioS.Play();
+   
+        updateSongText(audioS.clip.name.ToString());
     }
 }
      
