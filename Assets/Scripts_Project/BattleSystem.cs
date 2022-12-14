@@ -147,7 +147,7 @@ public class BattleSystem : MonoBehaviour
 		//check if finishes enemy
 		skeleton.SetActive(true);
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-		showAttackName("Attack");
+		showAttackName("Bite");
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		//dialogPanel.gameObject.SetActive(true);
@@ -156,6 +156,44 @@ public class BattleSystem : MonoBehaviour
 		//persona (skeleton) events
 		skeletonCameraws.SetActive(true);
 		personaPlayerAC.SetTrigger("attack");
+
+		yield return new WaitForSeconds(2f);
+		textAttackAnnouncer.enabled=false;
+		attackAnnouncer.enabled=false;
+		skeletonCameraws.SetActive(false);
+		//skeleton.SetActive(false);
+		//dialogPanel.gameObject.SetActive(false);
+
+	    camAnimator.Play("idleCam1", 0, 0.25f);
+
+		if(isDead)
+		{
+			state = BattleState.WON;
+			EndBattle();
+		} else
+		{
+			state = BattleState.ENEMYTURN;
+			StartCoroutine(EnemyTurn());
+		}
+	}
+
+	IEnumerator PlayerStrongAttack()
+	{
+		hideSkillButtons();
+		//fade in skeleton
+		//fadeInObject(skeleton);
+		//check if finishes enemy
+		skeleton.SetActive(true);
+		bool isDead = enemyUnit.TakeDamage(playerUnit.damage + 10);
+		showAttackName("Snake whip");
+		//set hp
+		enemyHUD.SetHP(enemyUnit.currentHP);
+		//dialogPanel.gameObject.SetActive(true);
+		//dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
+
+		//persona (skeleton) events
+		skeletonCameraws.SetActive(true);
+		personaPlayerAC.SetTrigger("strongAttack");
 
 		yield return new WaitForSeconds(2f);
 		textAttackAnnouncer.enabled=false;
@@ -244,7 +282,7 @@ public class BattleSystem : MonoBehaviour
 			else
 			{
 				showAttackName("Tackle");
-				dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
+				//dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
 				yield return new WaitForSeconds(2f);
 
 				//personaEnemy.SetActive(true);
@@ -258,7 +296,7 @@ public class BattleSystem : MonoBehaviour
 			if(isFocused)
 			{
 				showAttackName("Charged Curse");
-				dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit! (atac 3 focused) 12 damage";
+				//dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit! (atac 3 focused) 12 damage";
 				damageMultiplier=4;
 				//enemyUnit.damage *= 4;
 				isFocused=false;
@@ -268,7 +306,7 @@ public class BattleSystem : MonoBehaviour
 			else
 			{
 				showAttackName("Strong will");
-				dialogText.text = enemyUnit.unitName + " charges with a strong attack! (atac 3 NO focused) 6 damage";
+				//dialogText.text = enemyUnit.unitName + " charges with a strong attack! (atac 3 NO focused) 6 damage";
 				damageMultiplier=2;
 				//enemyUnit.damage *= 2;
 			}
@@ -432,6 +470,7 @@ public class BattleSystem : MonoBehaviour
 
 	public void showSkillButtons()
 	{
+
 		playerAC.SetInteger("offenseStance", 0);
 		combatPanel.gameObject.SetActive(true);
 
@@ -545,6 +584,14 @@ public class BattleSystem : MonoBehaviour
 			return;
 
 		StartCoroutine(PlayerAttack());
+	}
+
+		public void OnStrongAttackButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(PlayerStrongAttack());
 	}
 
 	public void OnHealButton()
