@@ -96,6 +96,9 @@ public class BGM_Selector : MonoBehaviour
         name.Replace("(UnityEngine.AudioClip)","");
         currentSongName.text=name;
     }
+    public void stopSongs(){
+        audioS.Stop();
+    }
     public void startGame(){
         currentSongName.color= Color.black;
         BGM_tracks[1].name.Replace('s', 'G');

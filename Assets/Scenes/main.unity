@@ -2366,7 +2366,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573409223}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -3791,7 +3791,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 730514673}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -4082,12 +4082,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 65e320511b58c6a42b9bfd411858a1df, type: 3}
   - {fileID: 8300000, guid: beb0d9fa3a9c295488bb6b4598d92cb7, type: 3}
   - {fileID: 8300000, guid: 4d9c1a61a04523140808e63542332d24, type: 3}
+  - {fileID: 8300000, guid: f8f3193e5516a6144b8593c272273bfb, type: 3}
   audioBGMobject: {fileID: 1785863062}
   BGMpanel: {fileID: 1927361654}
   audioManager: {fileID: 1927361654}
   mainCam: {fileID: 963194225}
   enemyCam: {fileID: 1985434921}
   playerCam: {fileID: 1960459474}
+  zoomFacePlayerCam: {fileID: 1971222603}
   playerHUD: {fileID: 388756623}
   enemyHUD: {fileID: 1113048746}
   state: 0
@@ -7315,6 +7317,7 @@ Transform:
   - {fileID: 1794838658}
   - {fileID: 1985434922}
   - {fileID: 1960459475}
+  - {fileID: 1971222604}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7661,6 +7664,89 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960459474}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!1 &1971222603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1971222604}
+  - component: {fileID: 1971222606}
+  - component: {fileID: 1971222605}
+  m_Layer: 0
+  m_Name: zoomFacePlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1971222604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971222603}
+  m_LocalRotation: {x: -0, y: 0.9171937, z: -0, w: 0.3984416}
+  m_LocalPosition: {x: 14.03, y: 1.841, z: 6.622}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1879156901}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 133.038, z: 0}
+--- !u!81 &1971222605
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971222603}
+  m_Enabled: 1
+--- !u!20 &1971222606
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971222603}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
