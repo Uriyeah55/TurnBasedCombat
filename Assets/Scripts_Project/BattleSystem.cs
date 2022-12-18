@@ -24,12 +24,13 @@ public class BattleSystem : MonoBehaviour
 
 	//public Transform playerBattleStation;
 	//public Transform enemyBattleStation;
- [Header("Cameras")]
+ 	[Header("Cameras")]
 	public GameObject mainCam;
 	public GameObject enemyCam;
+	public GameObject enemyPersonaCam;
 	public GameObject playerCam;
 	public GameObject zoomFacePlayerCam;
-
+	public GameObject chimeraCameraws;
 
 	Animator camAnimator;
 	Unit playerUnit;
@@ -45,7 +46,7 @@ public class BattleSystem : MonoBehaviour
 		//personas
 	public GameObject chimera;
 	public GameObject personaEnemy;
-
+	public GameObject focusedEffect;
 	Animator personaPlayerAC;
 
 	public GameObject player;
@@ -54,10 +55,6 @@ public class BattleSystem : MonoBehaviour
 	Animator playerAC;
 	Animator enemyAC;
 		bool isDead; 
-
-	//cameras
-	public GameObject chimeraCameraws;
-	public GameObject enemyPersonaCam;
 
 	 [Header("Texts")]
 	public Text actorText;
@@ -113,7 +110,8 @@ public class BattleSystem : MonoBehaviour
     }
 	void Update(){
 	//	Debug.Log("alfonso damage: " + enemyUnit.damage);
-	//	Debug.Log("player HP: " + playerUnit.currentHP);
+	Debug.Log("esta focus? " + isFocused);
+	
 	}
 
 	IEnumerator SetupBattle()
@@ -153,19 +151,23 @@ public class BattleSystem : MonoBehaviour
 #region 
 	IEnumerator PlayerAttack()
 	{
+		playSound(4);
 		hideSkillButtons();
 		hideAudioButtons();
-		chimera.SetActive(true);
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 		showAttackName("Bite");
 		//set hp
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		
 		chimeraCameraws.SetActive(true);
+		playerCam.SetActive(true);
 		playerAC.SetTrigger("miniAttack");
 		yield return new WaitForSeconds(1f);
+		playerCam.SetActive(false);
+		chimeraCameraws.SetActive(true);
 		personaPlayerAC.SetTrigger("attack");
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(1.5f);
+		chimeraCameraws.SetActive(false);
 	
 		hideAttackName();
 		chimeraCameraws.SetActive(false);
@@ -188,13 +190,14 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerStrongAttack()
 	{
+		playSound(7);
 		hideAttackName();
 		hideSkillButtons();
 		hideAudioButtons();
 		//fade in chimera
 		//fadeInObject(chimera);
 		//check if finishes enemy
-		chimera.SetActive(true);
+	
 		playerAC.SetTrigger("superAttack");
 
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage + 10);
@@ -249,9 +252,9 @@ public class BattleSystem : MonoBehaviour
 	{
 		
 		hideSkillButtons();
+		hideAudioButtons();
+		hideAttackName();
 		//dialogPanel.SetActive(false);
-
-
 		//decidir atack 1 focus 2 atack 3 super atack 4 canviar song
 		int attackChosen = Random.Range(1, 5);
 
@@ -269,9 +272,10 @@ public class BattleSystem : MonoBehaviour
 		switch(attackChosen)
 		{
 		case 1:
-		enemyCam.SetActive(true);
+		enemyPersonaCam.SetActive(true);
 		showAttackName("Focus");
 		isFocused=true;
+		focusedEffect.SetActive(true);
 		Debug.Log("FOCUS");
 	
 		break;
@@ -284,12 +288,12 @@ public class BattleSystem : MonoBehaviour
 
 			//dialogText.text = enemyUnit.unitName + " attacks with more energy! (atac 2 focused) 6 dmg";
 
-			yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(1f);
 			enemyPersonaCam.SetActive(true);
-
 			enemyAC.GetComponent<Animator>().SetTrigger("attack");
 			yield return new WaitForSeconds(2f);
 			isFocused=false;
+			focusedEffect.SetActive(false);
 			damageMultiplier=2;
 		}
 		else
@@ -316,6 +320,7 @@ public class BattleSystem : MonoBehaviour
 				damageMultiplier=4;
 				//enemyUnit.damage *= 4;
 				isFocused=false;
+				focusedEffect.SetActive(false);
 				//reiniciem damage
 				//enemyUnit.damage=enemyUnit.baseDamage;
 			}
@@ -350,7 +355,7 @@ public class BattleSystem : MonoBehaviour
 
 			break;
 		}
-		hideAttackName();
+//		hideAttackName();
 
 		
 
@@ -363,19 +368,24 @@ public class BattleSystem : MonoBehaviour
 			switch(attackChosen)
 			{		
 				case 1:
-			personaEnemy.GetComponent<Animator>().SetTrigger("focus");
+				personaEnemy.GetComponent<Animator>().SetTrigger("focus");
+				yield return new WaitForSeconds(1f);
 				break;
 				case 2:
 			personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 				break;
 				case 3:
+				enemyCam.SetActive(true);
 				enemyAC.GetComponent<Animator>().SetTrigger("attackHard");
-			yield return new WaitForSeconds(1f);
-			enemyAC.GetComponent<Animator>().SetTrigger("strong");
+				yield return new WaitForSeconds(2f);
+				enemyCam.SetActive(false);
+				enemyPersonaCam.SetActive(true);
+				personaEnemy.GetComponent<Animator>().SetTrigger("strong");
 				break;
 			}
 			
-			yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(1f);
+			enemyPersonaCam.SetActive(false);
 			if(isFocused)
 			{
 				isDead = playerUnit.TakeDamage(0);
@@ -385,11 +395,8 @@ public class BattleSystem : MonoBehaviour
 				isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
 				//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
 				//dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
-
-				yield return new WaitForSeconds(2f);
 				dialogPanel.gameObject.SetActive(false);
 
-				enemyPersonaCam.SetActive(false);
 				//personaEnemy.SetActive(false);
 				playerHUD.SetHP(playerUnit.currentHP);
 			}
@@ -427,6 +434,7 @@ public class BattleSystem : MonoBehaviour
 
 	void PlayerTurn()
 	{
+		hideAttackName();
 		//dialogText.text = "Choose an action:";
 		//si li queda mitja vida o menys activa cutscene
 		if(enemyUnit.GetComponent<Unit>().currentHP<=enemyUnit.GetComponent<Unit>().maxHP/2){
@@ -449,7 +457,7 @@ public class BattleSystem : MonoBehaviour
 	//### SHOW AND HIDE UI ###
 	public void showOffensiveSkills()
 	{
-		
+		playSound(6);
 		playerAC.SetInteger("offenseStance", 1);
 		//playerAC.SetTrigger("offenseStance");
 		buttonAttack.gameObject.SetActive(true);
@@ -465,6 +473,7 @@ public class BattleSystem : MonoBehaviour
 	}
 	public void showDefenseSkills()
 	{
+		playSound(6);
 		//playerAC.SetTrigger("defStance");
 		playerAC.SetInteger("offenseStance", 2);
 		buttonHeal.gameObject.SetActive(true);
