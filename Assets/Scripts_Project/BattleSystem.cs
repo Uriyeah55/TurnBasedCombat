@@ -126,18 +126,20 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator SetupBattle()
 	{
 		//audioBGMobject.gameObject.SetActive(false);
-	/*
+	
 		attackAnnouncer.enabled=false;
 		textAttackAnnouncer.enabled=false;
-		yield return new WaitForSeconds(0.5f);
 
 		hideSkillButtons();
-		dialogPanel.gameObject.SetActive(true);
-		dialogText.text = "It's about time... I taught you a lesson!";
-
+		yield return new WaitForSeconds(0.2f);
 		//Adachi line
 		playSound(0);
-		*/
+		dialogPanel.gameObject.SetActive(true);
+		dialogText.text = "It's about time... I taught you a lesson!";
+		yield return new WaitForSeconds(3.8f);
+
+		
+		
 		playerUnit = playerGO.GetComponent<Unit>();
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
@@ -145,7 +147,6 @@ public class BattleSystem : MonoBehaviour
 		//playerHUD.SetHUD(playerUnit);
 		//enemyHUD.SetHUD(enemyUnit);
 
-		yield return new WaitForSeconds(0);
 		audioManager.GetComponent<BGM_Selector>().startGame();
 		//audioBGMobject.gameObject.SetActive(true);
 
@@ -289,6 +290,8 @@ public class BattleSystem : MonoBehaviour
 		case 1:
 		enemyPersonaCam.SetActive(true);
 		showAttackName("Focus");
+			playSound(10);
+
 		isFocused=true;
 		focusedEffect.SetActive(true);
 		Debug.Log("FOCUS");
@@ -298,6 +301,8 @@ public class BattleSystem : MonoBehaviour
 		//atac normal
 		if(isFocused)
 		{
+			playSound(9);
+
 			showAttackName("Focused attack");
 			dialogPanel.SetActive(false);
 			yield return new WaitForSeconds(1f);
@@ -310,12 +315,14 @@ public class BattleSystem : MonoBehaviour
 		}
 		else
 		{
+
 			showAttackName("Tackle");
 			//dialogPanel.SetActive(false);
 			//dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
 
 			//personaEnemy.SetActive(true);
 			enemyPersonaCam.SetActive(true);
+			playSound(9);
 			yield return new WaitForSeconds(2f);
 
 			enemyAC.GetComponent<Animator>().SetTrigger("attack");
@@ -325,25 +332,22 @@ public class BattleSystem : MonoBehaviour
 			case 3:
 			if(isFocused)
 			{
-				showAttackName("Charged Curse");
-				//dialogPanel.SetActive(false);
+			playSound(9);
 
-				//dialogText.text = enemyUnit.unitName + " charges with a focused epic mega super hit! (atac 3 focused) 12 damage";
+				showAttackName("Charged Curse");
+			
 				damageMultiplier=4;
-				//enemyUnit.damage *= 4;
 				isFocused=false;
 				focusedEffect.SetActive(false);
-				//reiniciem damage
-				//enemyUnit.damage=enemyUnit.baseDamage;
+
 			}
 			else
 			{
-				showAttackName("Strong will");
-				//dialogPanel.SetActive(false);
+			playSound(9);
 
-				//dialogText.text = enemyUnit.unitName + " charges with a strong attack! (atac 3 NO focused) 6 damage";
+				showAttackName("Strong will");
 				damageMultiplier=2;
-				//enemyUnit.damage *= 2;
+			
 			}
 			break;
 			case 4:
@@ -363,16 +367,10 @@ public class BattleSystem : MonoBehaviour
 				yield return new WaitForSeconds(1f);
 			
 				enemyCam.SetActive(false);
-				//alguna animacio a la UI de la tele?
+	
 
 			break;
 		}
-//		hideAttackName();
-
-		
-
-		
-//		Debug.Log("pre switch 2 atac: " + attackChosen + " i boleana " + isFocused);
 		
 		//si canvia la canço no volem que ataqui
 		if(attackChosen != 4)
@@ -405,22 +403,11 @@ public class BattleSystem : MonoBehaviour
 			else
 			{
 				isDead = playerUnit.TakeDamage(enemyUnit.damage * damageMultiplier);
-				//playerUnit.SetHP(enemyUnit.damage * damageMultiplier - playerUnit.currentHP);
-				//dialogText.text =  enemyUnit.unitName + " deals " + enemyUnit.damage * damageMultiplier + " points of damage!";
 				dialogPanel.gameObject.SetActive(false);
-
-				//personaEnemy.SetActive(false);
 				playerHUD.SetHP(playerUnit.currentHP);
 			}
-			//yield return new WaitForSeconds(1f);
+
 		}
-		
-		 //temporalDamageEnemy= enemyUnit.damage;
-		 //enemyUnit.damage=0;
-
-	
-		
-
 
 		if(isDead)
 		{
@@ -447,22 +434,22 @@ public class BattleSystem : MonoBehaviour
 	void PlayerTurn()
 	{
 		hideAttackName();
-		//dialogText.text = "Choose an action:";
+	/*
 		//si li queda mitja vida o menys activa cutscene
 		if(enemyUnit.GetComponent<Unit>().currentHP<=enemyUnit.GetComponent<Unit>().maxHP/2){
-			Debug.Log("activar cutscene end");
 			zoomFacePlayerCam.SetActive(true);
-		BGMpanel.GetComponent<BGM_Selector>().stopSongs();
+			BGMpanel.GetComponent<BGM_Selector>().stopSongs();
 			//so showtime
 			playerAC.SetTrigger("reacting");
 			
 			playSound(3);
 		}
 		else{
+			*/
 			dialogPanel.gameObject.SetActive(false);
 			showSkillButtons();
 			showAudioButtons();
-		}
+		//}
 		
 	}
 
@@ -471,7 +458,6 @@ public class BattleSystem : MonoBehaviour
 	{
 		playSound(6);
 		playerAC.SetInteger("currentStance", 1);
-		//playerAC.SetTrigger("currentStance");
 		buttonAttack.gameObject.SetActive(true);
 		buttonAttack2.gameObject.SetActive(true);
 

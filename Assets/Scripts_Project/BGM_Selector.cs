@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class BGM_Selector : MonoBehaviour
 {
+    public GameObject battleSyst;
+
+    public GameObject player;
     public Text currentSongName;
     public AudioClip[] BGM_tracks;
     public AudioClip[] enemy_BGM_tracks;
@@ -43,6 +46,9 @@ public class BGM_Selector : MonoBehaviour
 	}
     public void AddIndex()
     {
+		player.GetComponent<Animator>().SetInteger("currentStance", 0);
+        battleSyst.GetComponent<BattleSystem>().hideSkillButtons();
+        
         currentIndex++;
 
         if(currentIndex >= BGM_tracks.Length)
@@ -60,6 +66,9 @@ public class BGM_Selector : MonoBehaviour
    
        public void SubstractIndex()
     {
+		player.GetComponent<Animator>().SetInteger("currentStance", 0);
+        battleSyst.GetComponent<BattleSystem>().hideSkillButtons();
+
 
         currentIndex--;
         if(currentIndex < 0)
