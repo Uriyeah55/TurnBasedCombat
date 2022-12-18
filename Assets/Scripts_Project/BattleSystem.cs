@@ -425,9 +425,20 @@ public class BattleSystem : MonoBehaviour
 		if(state == BattleState.WON)
 		{
 			dialogText.text = "You won the battle!";
+			hideAudioButtons();
+			hideSkillButtons();
+			Time.timeScale=0;
+			BGMpanel.GetComponent<BGM_Selector>().stopSongs();
+
 		} else if (state == BattleState.LOST)
 		{
 			dialogText.text = "You were defeated.";
+			hideAudioButtons();
+			hideSkillButtons();
+			Time.timeScale=0;
+			BGMpanel.GetComponent<BGM_Selector>().stopSongs();
+
+
 		}
 	}
 
