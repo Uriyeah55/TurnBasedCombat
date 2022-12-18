@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class playSoundEf : MonoBehaviour
 {
-    AudioSource audioData;
-    public AudioClip[] audioSources;
+    AudioSource audioS;
+    public AudioClip[] sfxClips;
     // Start is called before the first frame update
     void Start()
     {
-        audioData = GetComponent<AudioSource>();
+        audioS = GetComponent<AudioSource>();
 
     }
 
@@ -18,7 +18,9 @@ public class playSoundEf : MonoBehaviour
     {
         
     }
-    public void playSound(){
-        audioData.Play(0);
-    }
+    public void playSFX(int clipPosition)
+	{
+         audioS.clip = sfxClips[clipPosition];
+         audioS.Play();
+	}
 }

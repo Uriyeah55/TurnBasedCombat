@@ -56,8 +56,8 @@ public class BGM_Selector : MonoBehaviour
          BattleSystemGO.GetComponent<BattleSystem>().hideAudioButtons();
          updateSongText(BGM_tracks[currentIndex].name);
         currentSongName.color= Color.black;
-
     }
+   
        public void SubstractIndex()
     {
 

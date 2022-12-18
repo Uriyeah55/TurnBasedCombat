@@ -24,6 +24,14 @@ public class BattleSystem : MonoBehaviour
 
 	//public Transform playerBattleStation;
 	//public Transform enemyBattleStation;
+
+	 [Header("FX")]
+	public GameObject focusedEffect;
+	public GameObject megidolaonEffect;
+	public GameObject firagaEffect;
+
+
+
  	[Header("Cameras")]
 	public GameObject mainCam;
 	public GameObject enemyCam;
@@ -41,12 +49,13 @@ public class BattleSystem : MonoBehaviour
 
 	public BattleState state;
 	 [Header("GameObjects")]
+	public GameObject SFXContainer;
+
 	public GameObject playerGO;
 	public GameObject enemyGO;
 		//personas
 	public GameObject chimera;
 	public GameObject personaEnemy;
-	public GameObject focusedEffect;
 	Animator personaPlayerAC;
 
 	public GameObject player;
@@ -151,29 +160,32 @@ public class BattleSystem : MonoBehaviour
 #region 
 	IEnumerator PlayerAttack()
 	{
-		playSound(4);
 		hideSkillButtons();
 		hideAudioButtons();
-		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-		showAttackName("Bite");
-		//set hp
-		enemyHUD.SetHP(enemyUnit.currentHP);
-		
-		chimeraCameraws.SetActive(true);
+		hideAttackName();
+		playSound(4);
 		playerCam.SetActive(true);
 		playerAC.SetTrigger("miniAttack");
+		showAttackName("Firaga");
 		yield return new WaitForSeconds(1f);
 		playerCam.SetActive(false);
 		chimeraCameraws.SetActive(true);
 		personaPlayerAC.SetTrigger("attack");
 		yield return new WaitForSeconds(1.5f);
-		chimeraCameraws.SetActive(false);
-	
 		hideAttackName();
+
 		chimeraCameraws.SetActive(false);
-		//chimera.SetActive(false);
-		//dialogPanel.gameObject.SetActive(false);
-		playerAC.SetInteger("offenseStance",0);
+		enemyPersonaCam.SetActive(true);
+		firagaEffect.SetActive(true);
+
+		StartCoroutine(personaEnemyDelayHit());
+		yield return new WaitForSeconds(3f);
+		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+		playerAC.SetInteger("currentStance",0);
+
+		enemyHUD.SetHP(enemyUnit.currentHP);
+		enemyPersonaCam.SetActive(false);
+
 	    camAnimator.Play("idleCam1", 0, 0.25f);
 
 		if(isDead)
@@ -190,35 +202,35 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerStrongAttack()
 	{
-		playSound(7);
 		hideAttackName();
 		hideSkillButtons();
 		hideAudioButtons();
-		//fade in chimera
-		//fadeInObject(chimera);
-		//check if finishes enemy
-	
+		playSound(7);
+		playerCam.SetActive(true);
 		playerAC.SetTrigger("superAttack");
-
-		bool isDead = enemyUnit.TakeDamage(playerUnit.damage + 10);
-		showAttackName("Snake whip");
-		//set hp
-		enemyHUD.SetHP(enemyUnit.currentHP);
-		//dialogPanel.gameObject.SetActive(true);
-		//dialogText.text = "Player: the attack deals " + playerUnit.damage + " points of damage!";
-
-		//persona (chimera) events
+		showAttackName("Megidolaon");
+		yield return new WaitForSeconds(1f);
+		playerCam.SetActive(false);
 		chimeraCameraws.SetActive(true);
 		personaPlayerAC.SetTrigger("strongAttack");
+		yield return new WaitForSeconds(1.2f);
+		hideAttackName();
+		playerAC.SetInteger("currentStance",0);
+		megidolaonEffect.SetActive(true);
 
-		yield return new WaitForSeconds(2f);
-		playerAC.SetInteger("offenseStance",0);
-	
+		enemyPersonaCam.SetActive(true);
+		StartCoroutine(personaEnemyDelayHit());
+		yield return new WaitForSeconds(3f);
+		bool isDead = enemyUnit.TakeDamage(playerUnit.damage + 10);
+		enemyHUD.SetHP(enemyUnit.currentHP);
 		chimeraCameraws.SetActive(false);
+		enemyPersonaCam.SetActive(false);
+
 		//chimera.SetActive(false);
 		//dialogPanel.gameObject.SetActive(false);
 
 	    camAnimator.Play("idleCam1", 0, 0.25f);
+		yield return new WaitForSeconds(2f);
 
 		if(isDead)
 		{
@@ -250,7 +262,10 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyTurn()
 	{
-		
+		megidolaonEffect.SetActive(false);
+		//focusedEffect.SetActive(false);
+		firagaEffect.SetActive(false);
+		yield return new WaitForSeconds(1f);
 		hideSkillButtons();
 		hideAudioButtons();
 		hideAttackName();
@@ -285,9 +300,6 @@ public class BattleSystem : MonoBehaviour
 		{
 			showAttackName("Focused attack");
 			dialogPanel.SetActive(false);
-
-			//dialogText.text = enemyUnit.unitName + " attacks with more energy! (atac 2 focused) 6 dmg";
-
 			yield return new WaitForSeconds(1f);
 			enemyPersonaCam.SetActive(true);
 			enemyAC.GetComponent<Animator>().SetTrigger("attack");
@@ -301,10 +313,10 @@ public class BattleSystem : MonoBehaviour
 			showAttackName("Tackle");
 			//dialogPanel.SetActive(false);
 			//dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
-			yield return new WaitForSeconds(2f);
 
 			//personaEnemy.SetActive(true);
 			enemyPersonaCam.SetActive(true);
+			yield return new WaitForSeconds(2f);
 
 			enemyAC.GetComponent<Animator>().SetTrigger("attack");
 			//yield return new WaitForSeconds(2f);
@@ -458,8 +470,8 @@ public class BattleSystem : MonoBehaviour
 	public void showOffensiveSkills()
 	{
 		playSound(6);
-		playerAC.SetInteger("offenseStance", 1);
-		//playerAC.SetTrigger("offenseStance");
+		playerAC.SetInteger("currentStance", 1);
+		//playerAC.SetTrigger("currentStance");
 		buttonAttack.gameObject.SetActive(true);
 		buttonAttack2.gameObject.SetActive(true);
 
@@ -475,7 +487,7 @@ public class BattleSystem : MonoBehaviour
 	{
 		playSound(6);
 		//playerAC.SetTrigger("defStance");
-		playerAC.SetInteger("offenseStance", 2);
+		playerAC.SetInteger("currentStance", 2);
 		buttonHeal.gameObject.SetActive(true);
 		buttonGreatHeal.gameObject.SetActive(true);
 
@@ -516,7 +528,7 @@ public class BattleSystem : MonoBehaviour
 	public void showSkillButtons()
 	{
 
-		playerAC.SetInteger("offenseStance", 0);
+		playerAC.SetInteger("currentStance", 0);
 		combatPanel.gameObject.SetActive(true);
 
 //		playerAC.SetTrigger("iddleStance");
@@ -548,7 +560,7 @@ public class BattleSystem : MonoBehaviour
 		if(playerUnit.currentHP==playerUnit.maxHP)
 		{
 			dialogText.text = "Already full HP!";
-			playerAC.SetInteger("offenseStance",0);
+			playerAC.SetInteger("currentStance",0);
 
 		}
 		else
@@ -560,6 +572,7 @@ public class BattleSystem : MonoBehaviour
 			dialogPanel.SetActive(true);
 			dialogText.enabled=true;
 			dialogText.text = "You recover " + amountHealed + "HP!";
+			playSFXPosition(1);
 			personaPlayerAC.SetTrigger("heal");
 		}
 		yield return new WaitForSeconds(2f);
@@ -568,9 +581,16 @@ public class BattleSystem : MonoBehaviour
 
 		dialogPanel.gameObject.SetActive(false);
 		
-		playerAC.SetInteger("offenseStance",0);
+		playerAC.SetInteger("currentStance",0);
 		state = BattleState.ENEMYTURN;
 		StartCoroutine(EnemyTurn());
+	}
+
+	IEnumerator personaEnemyDelayHit()
+	{
+		yield return new WaitForSeconds(1.5f);
+		personaEnemy.GetComponent<Animator>().SetTrigger("receiveHit");
+
 	}
 
 		IEnumerator PlayerBigHealAttempt()
@@ -579,7 +599,7 @@ public class BattleSystem : MonoBehaviour
 		hideAudioButtons();
 
 		playerCam.SetActive(true);
-		playerAC.SetInteger("offenseStance",3);
+		playerAC.SetInteger("currentStance",3);
 		
 		showAttackName("Super Recovery");
 
@@ -590,7 +610,7 @@ public class BattleSystem : MonoBehaviour
 		{
 			dialogPanel.gameObject.SetActive(true);
 			dialogText.text = "Already at full HP!";	
-			playerAC.SetInteger("offenseStance",0);
+			playerAC.SetInteger("currentStance",0);
 		}
 		else
 		{
@@ -609,9 +629,8 @@ public class BattleSystem : MonoBehaviour
 				dialogPanel.gameObject.SetActive(true);
 				dialogText.enabled=true;
 				dialogText.text = "Super recovery heals you fully! You recover " + amountHealed + "HP!";
-				personaPlayerAC.SetInteger("offenseStance",3);
 				yield return new WaitForSeconds(2f);
-				personaPlayerAC.SetInteger("offenseStance",0);
+				personaPlayerAC.SetInteger("currentStance",0);
 			}
 			else
 			{
@@ -619,10 +638,11 @@ public class BattleSystem : MonoBehaviour
 				dialogPanel.gameObject.SetActive(true);
 				dialogText.enabled=true;
 				dialogText.text = "Healing failed";
-				playerAC.SetInteger("offenseStance",0);
+				playerAC.SetInteger("currentStance",0);
 
 			}
 		}
+		playerAC.SetInteger("currentStance",0);
 		playerCam.SetActive(false);
 		yield return new WaitForSeconds(2f);
 		hideAttackName();
@@ -656,6 +676,10 @@ public class BattleSystem : MonoBehaviour
 			return;
 
 		StartCoroutine(PlayerHeal());
+	}
+	public void playSFXPosition(int position){
+		SFXContainer.GetComponent<playSoundEf>().playSFX(position);
+
 	}
 	public void OnBigHealButton()
 	{
