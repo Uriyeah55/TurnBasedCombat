@@ -11,7 +11,7 @@ public enum BattleState {START,PLAYERTURN,ENEMYTURN,WON,LOST}
 public class BattleSystem : MonoBehaviour
 {
 
- [Header("Audio")]
+ 	[Header("Audio")]
 
 	AudioSource mainAudioSource;
 	public AudioClip[] soundsArray;
@@ -30,8 +30,6 @@ public class BattleSystem : MonoBehaviour
 	public GameObject megidolaonEffect;
 	public GameObject firagaEffect;
 
-
-
  	[Header("Cameras")]
 	public GameObject mainCam;
 	public GameObject enemyCam;
@@ -43,7 +41,6 @@ public class BattleSystem : MonoBehaviour
 	Animator camAnimator;
 	Unit playerUnit;
 	Unit enemyUnit;
-
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
 
@@ -53,19 +50,19 @@ public class BattleSystem : MonoBehaviour
 
 	public GameObject playerGO;
 	public GameObject enemyGO;
-		//personas
+	//personas
 	public GameObject chimera;
 	public GameObject personaEnemy;
 	Animator personaPlayerAC;
 
 	public GameObject player;
 	public GameObject enemy;
- [Header("Animators")]
+ 	[Header("Animators")]
 	Animator playerAC;
 	Animator enemyAC;
-		bool isDead; 
+	bool isDead; 
 
-	 [Header("Texts")]
+	[Header("Texts")]
 	public Text actorText;
 	public Text dialogText;
 	//UI 
@@ -118,8 +115,6 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(SetupBattle());
     }
 	void Update(){
-	//	Debug.Log("alfonso damage: " + enemyUnit.damage);
-	Debug.Log("esta focus? " + isFocused);
 	
 	}
 
@@ -129,7 +124,7 @@ public class BattleSystem : MonoBehaviour
 	
 		attackAnnouncer.enabled=false;
 		textAttackAnnouncer.enabled=false;
-
+		hideAudioButtons();
 		hideSkillButtons();
 		yield return new WaitForSeconds(0.2f);
 		//Adachi line
@@ -138,25 +133,16 @@ public class BattleSystem : MonoBehaviour
 		dialogText.text = "It's about time... I taught you a lesson!";
 		yield return new WaitForSeconds(3.8f);
 
-		
-		
 		playerUnit = playerGO.GetComponent<Unit>();
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
-
-		//playerHUD.SetHUD(playerUnit);
-		//enemyHUD.SetHUD(enemyUnit);
-
 		audioManager.GetComponent<BGM_Selector>().startGame();
-		//audioBGMobject.gameObject.SetActive(true);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 		showSkillButtons();
 		dialogPanel.gameObject.SetActive(false);
 		actorText.enabled=false;
-
-
 	}
 #region 
 	IEnumerator PlayerAttack()
@@ -278,10 +264,8 @@ public class BattleSystem : MonoBehaviour
 		{
 		//torna a calcular si toca focus i ja esta focus
  		attackChosen = Random.Range(1, 5);
-		Debug.Log("ha coincidit random i focused");
 		}
 
-		Debug.Log("atack post random: " + attackChosen);
 
 		//damageMultiplier will be used to determine if the enemy has buffs
 		int damageMultiplier=1;
@@ -290,11 +274,10 @@ public class BattleSystem : MonoBehaviour
 		case 1:
 		enemyPersonaCam.SetActive(true);
 		showAttackName("Focus");
-			playSound(10);
+		playSound(10);
 
 		isFocused=true;
 		focusedEffect.SetActive(true);
-		Debug.Log("FOCUS");
 	
 		break;
 		case 2:
@@ -302,7 +285,6 @@ public class BattleSystem : MonoBehaviour
 		if(isFocused)
 		{
 			playSound(9);
-
 			showAttackName("Focused attack");
 			dialogPanel.SetActive(false);
 			yield return new WaitForSeconds(1f);
@@ -315,18 +297,12 @@ public class BattleSystem : MonoBehaviour
 		}
 		else
 		{
-
 			showAttackName("Tackle");
-			//dialogPanel.SetActive(false);
-			//dialogText.text = enemyUnit.unitName + " attacks! (atac 2 NO focused) 3 dmg";
-
-			//personaEnemy.SetActive(true);
 			enemyPersonaCam.SetActive(true);
 			playSound(9);
-			yield return new WaitForSeconds(2f);
-
+			yield return new WaitForSeconds(1f);
 			enemyAC.GetComponent<Animator>().SetTrigger("attack");
-			//yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(1f);
 		}
 			break;
 			case 3:
@@ -339,7 +315,6 @@ public class BattleSystem : MonoBehaviour
 				damageMultiplier=4;
 				isFocused=false;
 				focusedEffect.SetActive(false);
-
 			}
 			else
 			{
@@ -347,7 +322,6 @@ public class BattleSystem : MonoBehaviour
 
 				showAttackName("Strong will");
 				damageMultiplier=2;
-			
 			}
 			break;
 			case 4:
@@ -365,10 +339,7 @@ public class BattleSystem : MonoBehaviour
 				yield return new WaitForSeconds(0.4f);
 				BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
 				yield return new WaitForSeconds(1f);
-			
 				enemyCam.SetActive(false);
-	
-
 			break;
 		}
 		
@@ -483,7 +454,6 @@ public class BattleSystem : MonoBehaviour
 	public void showDefenseSkills()
 	{
 		playSound(6);
-		//playerAC.SetTrigger("defStance");
 		playerAC.SetInteger("currentStance", 2);
 		buttonHeal.gameObject.SetActive(true);
 		buttonGreatHeal.gameObject.SetActive(true);
@@ -499,8 +469,7 @@ public class BattleSystem : MonoBehaviour
 	}
 	public void hideSkillButtons()
 	{
-			combatPanel.gameObject.SetActive(false);
-
+		combatPanel.gameObject.SetActive(false);
 		buttonAttack.gameObject.SetActive(false);
 		buttonAttack2.gameObject.SetActive(false);
 		buttonHeal.gameObject.SetActive(false);
@@ -524,12 +493,8 @@ public class BattleSystem : MonoBehaviour
 
 	public void showSkillButtons()
 	{
-
 		playerAC.SetInteger("currentStance", 0);
-		combatPanel.gameObject.SetActive(true);
-
-//		playerAC.SetTrigger("iddleStance");
-		
+		combatPanel.gameObject.SetActive(true);		
 		buttonHeal.gameObject.SetActive(false);
 		buttonAttack.gameObject.SetActive(false);
 
@@ -540,7 +505,6 @@ public class BattleSystem : MonoBehaviour
 		buttonDefenseSkills.gameObject.SetActive(true);
 		escapeBtn.gameObject.SetActive(true);		
 		backSkills.gameObject.SetActive(false);
-
 	}
 
 
