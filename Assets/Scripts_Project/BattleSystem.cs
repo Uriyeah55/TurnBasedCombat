@@ -12,23 +12,17 @@ public class BattleSystem : MonoBehaviour
 {
 
  	[Header("Audio")]
-
 	AudioSource mainAudioSource;
 	public AudioClip[] soundsArray;
 	public GameObject audioBGMobject;
 	public GameObject BGMpanel;
 	public GameObject audioManager;
 
-	//public GameObject playerPrefab;
-	//public GameObject enemyPrefab;
-
-	//public Transform playerBattleStation;
-	//public Transform enemyBattleStation;
-
 	 [Header("FX")]
 	public GameObject focusedEffect;
 	public GameObject megidolaonEffect;
 	public GameObject firagaEffect;
+	public GameObject SFXContainer;
 
  	[Header("Cameras")]
 	public GameObject mainCam;
@@ -37,20 +31,18 @@ public class BattleSystem : MonoBehaviour
 	public GameObject playerCam;
 	public GameObject zoomFacePlayerCam;
 	public GameObject chimeraCameraws;
-
 	Animator camAnimator;
-	Unit playerUnit;
-	Unit enemyUnit;
+
+ 	[Header("Units")]
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
+	Unit playerUnit;
+	Unit enemyUnit;
 
 	public BattleState state;
-	 [Header("GameObjects")]
-	public GameObject SFXContainer;
-
+	 [Header("Characters")]
 	public GameObject playerGO;
 	public GameObject enemyGO;
-	//personas
 	public GameObject chimera;
 	public GameObject personaEnemy;
 	Animator personaPlayerAC;
@@ -86,42 +78,21 @@ public class BattleSystem : MonoBehaviour
 	public GameObject previousSongButton;
 	public GameObject nextSongButton;
 
-
-
 	bool isFocused=false;
-	//bool turnFocusedPassed=false;
-	//int temporalDamageEnemy=0;
     // Start is called before the first frame update
     void Start()
     {
-		//textAttackAnnouncer.enabled=true;
-		//attackAnnouncer.enabled=true;
-		
 		hideSkillButtons();
 		camAnimator= mainCam.gameObject.GetComponent<Animator>();
-
-
 		personaPlayerAC= chimera.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
 		enemyAC=enemy.GetComponent<Animator>();
-
 		mainAudioSource = this.gameObject.GetComponent<AudioSource>();
-        //collision2 = audiosVoice[1];
-        //collision3 = audiosVoice[2];
-        //collision4 = audiosVoice[3];
-		
-		
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
     }
-	void Update(){
-	
-	}
-
 	IEnumerator SetupBattle()
 	{
-		//audioBGMobject.gameObject.SetActive(false);
-	
 		attackAnnouncer.enabled=false;
 		textAttackAnnouncer.enabled=false;
 		hideAudioButtons();
@@ -213,9 +184,6 @@ public class BattleSystem : MonoBehaviour
 		chimeraCameraws.SetActive(false);
 		enemyPersonaCam.SetActive(false);
 
-		//chimera.SetActive(false);
-		//dialogPanel.gameObject.SetActive(false);
-
 	    camAnimator.Play("idleCam1", 0, 0.25f);
 		yield return new WaitForSeconds(2f);
 
@@ -237,8 +205,6 @@ public class BattleSystem : MonoBehaviour
 		dialogPanel.gameObject.SetActive(true);
 		dialogText.enabled=true;
 		dialogText.text = "Can't escape this battle. Time to face your demons.";
-
-		//quan acabi la animacio desapareix amb fade out
 		yield return new WaitForSeconds(3f);
 
 		showAudioButtons();
@@ -256,16 +222,14 @@ public class BattleSystem : MonoBehaviour
 		hideSkillButtons();
 		hideAudioButtons();
 		hideAttackName();
-		//dialogPanel.SetActive(false);
 		//decidir atack 1 focus 2 atack 3 super atack 4 canviar song
 		int attackChosen = Random.Range(1, 5);
 
 		while (attackChosen==1 && isFocused)
 		{
-		//torna a calcular si toca focus i ja esta focus
- 		attackChosen = Random.Range(1, 5);
+			//torna a calcular si toca focus i ja esta focus
+			attackChosen = Random.Range(1, 5);
 		}
-
 
 		//damageMultiplier will be used to determine if the enemy has buffs
 		int damageMultiplier=1;
@@ -340,7 +304,7 @@ public class BattleSystem : MonoBehaviour
 				BGMpanel.GetComponent<BGM_Selector>().playEnemySong();
 				yield return new WaitForSeconds(1f);
 				enemyCam.SetActive(false);
-			break;
+				break;
 		}
 		
 		//si canvia la canço no volem que ataqui
@@ -353,7 +317,7 @@ public class BattleSystem : MonoBehaviour
 				yield return new WaitForSeconds(1f);
 				break;
 				case 2:
-			personaEnemy.GetComponent<Animator>().SetTrigger("attack");
+				personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 				break;
 				case 3:
 				enemyCam.SetActive(true);
@@ -408,8 +372,6 @@ public class BattleSystem : MonoBehaviour
 			hideSkillButtons();
 			Time.timeScale=0;
 			BGMpanel.GetComponent<BGM_Selector>().stopSongs();
-
-
 		}
 	}
 
@@ -507,8 +469,6 @@ public class BattleSystem : MonoBehaviour
 		backSkills.gameObject.SetActive(false);
 	}
 
-
-
 	IEnumerator PlayerHeal()
 	{
 		hideSkillButtons();
@@ -522,7 +482,6 @@ public class BattleSystem : MonoBehaviour
 		{
 			dialogText.text = "Already full HP!";
 			playerAC.SetInteger("currentStance",0);
-
 		}
 		else
 		{
@@ -609,8 +568,6 @@ public class BattleSystem : MonoBehaviour
 		hideAttackName();
 		
 		dialogPanel.gameObject.SetActive(false);
-		
-
 		state = BattleState.ENEMYTURN;
 		StartCoroutine(EnemyTurn());
 	}
@@ -638,9 +595,9 @@ public class BattleSystem : MonoBehaviour
 
 		StartCoroutine(PlayerHeal());
 	}
-	public void playSFXPosition(int position){
+	public void playSFXPosition(int position)
+	{
 		SFXContainer.GetComponent<playSoundEf>().playSFX(position);
-
 	}
 	public void OnBigHealButton()
 	{
@@ -673,8 +630,9 @@ public class BattleSystem : MonoBehaviour
          mainAudioSource.clip = soundsArray[clipPosition];
          mainAudioSource.Play();
 	}
-	//method called from other scripts to start the coroutine
-	public void startEnemyTurn(){
+	//method called from other scripts to start the coroutine (no es pot cridar una Coroutine desde GetComponent)
+	public void startEnemyTurn()
+	{
 		StartCoroutine(EnemyTurn());
 	}
 }
