@@ -14,7 +14,6 @@ public class BattleSystem : MonoBehaviour
  	[Header("Audio")]
 	AudioSource mainAudioSource;
 	public AudioClip[] soundsArray;
-	public GameObject audioBGMobject;
 	public GameObject BGMpanel;
 	public GameObject audioManager;
 
@@ -71,6 +70,9 @@ public class BattleSystem : MonoBehaviour
 	public Button backSkills;
 
 	public GameObject dialogPanel;
+	public GameObject CameraTransitionManager;
+	public GameObject camBehindPlayer;
+
 	public GameObject combatPanel;
 	public Image attackAnnouncer;
 	public Text textAttackAnnouncer;
@@ -99,15 +101,15 @@ public class BattleSystem : MonoBehaviour
 		hideSkillButtons();
 		yield return new WaitForSeconds(0.2f);
 		//Adachi line
-		playSound(0);
-		dialogPanel.gameObject.SetActive(true);
-		dialogText.text = "It's about time... I taught you a lesson!";
-		yield return new WaitForSeconds(3.8f);
+		//playSound(0);
+		//dialogPanel.gameObject.SetActive(true);
+		//dialogText.text = "It's about time... I taught you a lesson!";
+		//yield return new WaitForSeconds(3.8f);
 
 		playerUnit = playerGO.GetComponent<Unit>();
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
-		audioManager.GetComponent<BGM_Selector>().startGame();
+		//audioManager.GetComponent<BGM_Selector>().startGame();
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
@@ -116,14 +118,17 @@ public class BattleSystem : MonoBehaviour
 		actorText.enabled=false;
 	}
 #region 
+//Player attack 1
 	IEnumerator PlayerAttack()
 	{
 		hideSkillButtons();
 		hideAudioButtons();
 		hideAttackName();
+		//crida so persona!
 		playSound(4);
 		//enable player behind cam
-		camManagerObject.GetComponent<CameraManager>().enableSpecificCamera(1);
+		
+		//camManagerObject.GetComponent<CameraManager>().enableSpecificCamera(1);
 		//playerCam.SetActive(true);
 		playerAC.SetTrigger("miniAttack");
 		showAttackName("Firaga");
@@ -398,7 +403,10 @@ public class BattleSystem : MonoBehaviour
 	public void showOffensiveSkills()
 	{
 		playSound(6);
-		playerAC.SetInteger("currentStance", 1);
+		playerAC.SetInteger("currentStance", 2);
+		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
+		camBehindPlayer.GetComponent<Animator>().SetTrigger("triggZoom");
+
 		buttonAttack.gameObject.SetActive(true);
 		buttonAttack2.gameObject.SetActive(true);
 
