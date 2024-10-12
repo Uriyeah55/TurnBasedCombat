@@ -25,6 +25,7 @@ public class BattleSystem : MonoBehaviour
 	public GameObject SFXContainer;
 
  	[Header("Cameras")]
+	public GameObject camManagerObject;
 	public GameObject mainCam;
 	public GameObject enemyCam;
 	public GameObject enemyPersonaCam;
@@ -44,7 +45,6 @@ public class BattleSystem : MonoBehaviour
 	public GameObject playerGO;
 	public GameObject enemyGO;
 	public GameObject chimera;
-	public GameObject personaEnemy;
 	Animator personaPlayerAC;
 
 	public GameObject player;
@@ -122,7 +122,9 @@ public class BattleSystem : MonoBehaviour
 		hideAudioButtons();
 		hideAttackName();
 		playSound(4);
-		playerCam.SetActive(true);
+		//enable player behind cam
+		camManagerObject.GetComponent<CameraManager>().enableSpecificCamera(1);
+		//playerCam.SetActive(true);
 		playerAC.SetTrigger("miniAttack");
 		showAttackName("Firaga");
 		yield return new WaitForSeconds(1f);
@@ -136,7 +138,6 @@ public class BattleSystem : MonoBehaviour
 		enemyPersonaCam.SetActive(true);
 		firagaEffect.SetActive(true);
 
-		StartCoroutine(personaEnemyDelayHit());
 		yield return new WaitForSeconds(3f);
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 		playerAC.SetInteger("currentStance",0);
@@ -177,7 +178,6 @@ public class BattleSystem : MonoBehaviour
 		megidolaonEffect.SetActive(true);
 
 		enemyPersonaCam.SetActive(true);
-		StartCoroutine(personaEnemyDelayHit());
 		yield return new WaitForSeconds(3f);
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage + 10);
 		enemyHUD.SetHP(enemyUnit.currentHP);
@@ -313,11 +313,9 @@ public class BattleSystem : MonoBehaviour
 			switch(attackChosen)
 			{		
 				case 1:
-				personaEnemy.GetComponent<Animator>().SetTrigger("focus");
 				yield return new WaitForSeconds(1f);
 				break;
 				case 2:
-				personaEnemy.GetComponent<Animator>().SetTrigger("attack");
 				break;
 				case 3:
 				enemyCam.SetActive(true);
@@ -325,7 +323,6 @@ public class BattleSystem : MonoBehaviour
 				yield return new WaitForSeconds(2f);
 				enemyCam.SetActive(false);
 				enemyPersonaCam.SetActive(true);
-				personaEnemy.GetComponent<Animator>().SetTrigger("strong");
 				break;
 			}
 			
@@ -506,12 +503,7 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(EnemyTurn());
 	}
 
-	IEnumerator personaEnemyDelayHit()
-	{
-		yield return new WaitForSeconds(1.5f);
-		personaEnemy.GetComponent<Animator>().SetTrigger("receiveHit");
 
-	}
 
 		IEnumerator PlayerBigHealAttempt()
 	{
