@@ -25,6 +25,8 @@ public class BattleSystem : MonoBehaviour
 
  	[Header("Cameras")]
 	public GameObject camManagerObject;
+	public GameObject canvasCombat;
+
 	public GameObject mainCam;
 	public GameObject enemyCam;
 	public GameObject enemyPersonaCam;
@@ -42,6 +44,7 @@ public class BattleSystem : MonoBehaviour
 	public BattleState state;
 	 [Header("Characters")]
 	public GameObject playerGO;
+	public GameObject skillCardPanel;
 	public GameObject enemyGO;
 	public GameObject chimera;
 	Animator personaPlayerAC;
@@ -402,8 +405,11 @@ public class BattleSystem : MonoBehaviour
 	//### SHOW AND HIDE UI ###
 	public void showOffensiveSkills()
 	{
-		playSound(6);
+		//playSound(6);
 		playerAC.SetInteger("currentStance", 2);
+		skillCardPanel.SetActive(true);
+		       canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-100f, -40f, .2f);
+
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
 		camBehindPlayer.GetComponent<Animator>().SetTrigger("triggZoom");
 
