@@ -5270,9 +5270,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterSkills:
   - {fileID: 11400000, guid: e8f993473fa505b4095008215a57b08f, type: 2}
-  - {fileID: 11400000, guid: d821ddd49d820a04494b3df6d9c1fe9f, type: 2}
-  - {fileID: 11400000, guid: b6258b1cb5999cc4f8c68e4adaa95489, type: 2}
-  - {fileID: 11400000, guid: b6258b1cb5999cc4f8c68e4adaa95489, type: 2}
   cardPrefab: {fileID: 5875111711050015325, guid: e0b8d1adf98491148bc6a22581cd3ed1, type: 3}
   cardParent: {fileID: 1092324887}
 --- !u!1 &891480011
@@ -6343,8 +6340,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -234.283, y: 9.5159}
-  m_SizeDelta: {x: 74.329, y: 171.37}
+  m_AnchoredPosition: {x: 200.358, y: 103.528}
+  m_SizeDelta: {x: 318.234, y: 200.689}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1092324891
 CanvasRenderer:

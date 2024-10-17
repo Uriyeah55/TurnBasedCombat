@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Megidolaon
   m_EditorClassIdentifier: 
   skillName: Megidolaon
+  skillDescription: dsdsds
   damage: 5
   isOffensive: 1
+  skillSprite: {fileID: 0}

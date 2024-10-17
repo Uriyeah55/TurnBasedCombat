@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Heal
   m_EditorClassIdentifier: 
   skillName: Heal
+  skillDescription: ssssss
   damage: 0
   isOffensive: 0
+  skillSprite: {fileID: 0}
