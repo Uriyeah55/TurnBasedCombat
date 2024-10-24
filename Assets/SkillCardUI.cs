@@ -4,20 +4,22 @@ using TMPro;
 
 public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public TMP_Text skillNameText, skillDescription;  // References for name and description text
-    public Sprite skillIcon;  // Reference to the Image UI for the skill icon (optional)
+    public TMP_Text skillNameText, skillDescription;
+    public Sprite skillIcon;
 
-    private Vector3 originalPosition;  // Store the original position of the card
-    private Vector3 hoverOffset = new Vector3(0, 20, 0);  // The amount to move the card up
+    private Vector3 originalPosition;
+    private Vector3 hoverOffset = new Vector3(0, 20, 0);
+    private RectTransform cardRectTransform;  // El RectTransform de la carta, no del contenedor
 
-    // Flag to ensure we don't repeatedly modify the position
     private bool isHovered = false;
 
-    // Initialize the original position of the card
     void Start()
     {
-        // Store the card's original position
-        originalPosition = transform.localPosition;
+        // Obtener el RectTransform de la propia carta (no el contenedor)
+        cardRectTransform = GetComponent<RectTransform>();
+
+        // Almacenar la posición original de la carta en relación a su contenedor
+        originalPosition = cardRectTransform.anchoredPosition;
     }
 
     public void SetSkillData(Skill skill)
@@ -30,20 +32,17 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         Debug.Log("Setting skill data for: " + skill.skillName);
 
-        // Dynamically assign text components based on hierarchy
         skillNameText = transform.GetChild(0).GetComponent<TMP_Text>();
         skillDescription = transform.GetChild(1).GetComponent<TMP_Text>();
 
-        // Check for null references
         if (skillNameText == null || skillDescription == null)
         {
             Debug.LogError("Text components not assigned or found in the prefab hierarchy!");
             return;
         }
 
-        // Set the skill name and description in the UI
         skillNameText.text = skill.skillName;
-        skillDescription.text = skill.skillDescription;  // Ensure your Skill class has this field
+        skillDescription.text = skill.skillDescription;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -51,8 +50,8 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (!isHovered)
         {
             isHovered = true;
-            // Move the card up by the hover offset
-            transform.localPosition = originalPosition + hoverOffset;
+            // Mover solo la carta dentro del contenedor usando anchoredPosition
+            cardRectTransform.anchoredPosition = originalPosition + hoverOffset;
         }
     }
 
@@ -61,8 +60,8 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (isHovered)
         {
             isHovered = false;
-            // Reset the card's position back to its original position
-            transform.localPosition = originalPosition;
+            // Restaurar la posición de la carta dentro del contenedor
+            cardRectTransform.anchoredPosition = originalPosition;
         }
     }
 }

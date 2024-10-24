@@ -21,33 +21,35 @@ public class SkillsManager : MonoBehaviour
         StartCoroutine(SpawnSkillCards());
     }
 
-    private IEnumerator SpawnSkillCards()
+private IEnumerator SpawnSkillCards()
+{
+    foreach (Skill skill in CharacterSkills)
     {
-        foreach (Skill skill in CharacterSkills)
+        if (skill == null)
         {
-            if (skill == null) // Check for null skill
-            {
-                Debug.LogWarning("Found a null skill in CharacterSkills.");
-                continue; // Skip this iteration if skill is null
-            }
-
-            Debug.Log("Spawning skill: " + skill.skillName); // Log the skill name
-
-            // Instantiate the skill card prefab
-            GameObject newCard = Instantiate(cardPrefab, cardParent);
-            var skillCardUI = newCard.GetComponent<SkillCardUI>();
-
-            if (skillCardUI != null)
-            {
-                skillCardUI.SetSkillData(skill);  // Set the skill data on the card
-            }
-            else
-            {
-                Debug.LogError($"SkillCardUI component not found on the prefab: {cardPrefab.name}");
-            }
-
-            // Optionally yield here if you're spawning many cards and want to control timing
-            yield return null; // Wait for the next frame (optional)
+            Debug.LogWarning("Found a null skill in CharacterSkills.");
+            continue;
         }
+
+        Debug.Log("Spawning skill: " + skill.skillName);
+
+        // Instanciar el prefab
+        GameObject newCard = Instantiate(cardPrefab, cardParent);
+
+        // Obtener el SkillCardUI desde los hijos
+        var skillCardUI = newCard.GetComponentInChildren<SkillCardUI>();
+
+        if (skillCardUI != null)
+        {
+            skillCardUI.SetSkillData(skill);
+        }
+        else
+        {
+            Debug.LogError($"SkillCardUI component not found on any child of the prefab: {cardPrefab.name}");
+        }
+
+        yield return null; // Esperar al siguiente frame
     }
+}
+
 }
