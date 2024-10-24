@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 using UnityEngine.EventSystems;
 using TMPro;
 
@@ -6,6 +8,7 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public TMP_Text skillNameText, skillDescription;
     public Sprite skillIcon;
+    public Image image;
 
     private Vector3 originalPosition;
     private Vector3 hoverOffset = new Vector3(0, 20, 0);
@@ -15,6 +18,7 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void Start()
     {
+        hideInfoTexts();
         // Obtener el RectTransform de la propia carta (no el contenedor)
         cardRectTransform = GetComponent<RectTransform>();
 
@@ -32,8 +36,6 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         Debug.Log("Setting skill data for: " + skill.skillName);
 
-        skillNameText = transform.GetChild(0).GetComponent<TMP_Text>();
-        skillDescription = transform.GetChild(1).GetComponent<TMP_Text>();
 
         if (skillNameText == null || skillDescription == null)
         {
@@ -51,7 +53,10 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             isHovered = true;
             // Mover solo la carta dentro del contenedor usando anchoredPosition
-            cardRectTransform.anchoredPosition = originalPosition + hoverOffset;
+           // cardRectTransform.anchoredPosition = originalPosition + hoverOffset;
+           image.rectTransform.localPosition= new Vector3(0,20,0);
+           showInfoTexts();
+
         }
     }
 
@@ -61,7 +66,18 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             isHovered = false;
             // Restaurar la posición de la carta dentro del contenedor
-            cardRectTransform.anchoredPosition = originalPosition;
+            //cardRectTransform.anchoredPosition = originalPosition;
+           image.rectTransform.localPosition= Vector3.zero;
+           hideInfoTexts();
+
         }
+    }
+        public void showInfoTexts(){
+        skillNameText.enabled=true;
+        skillDescription.enabled=true;
+    }
+    public void hideInfoTexts(){
+        skillNameText.enabled=false;
+        skillDescription.enabled=false;
     }
 }

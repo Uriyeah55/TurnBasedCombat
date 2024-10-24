@@ -5271,7 +5271,7 @@ MonoBehaviour:
   CharacterSkills:
   - {fileID: 11400000, guid: e8f993473fa505b4095008215a57b08f, type: 2}
   - {fileID: 11400000, guid: e8f993473fa505b4095008215a57b08f, type: 2}
-  cardPrefab: {fileID: 8076529743548914896, guid: 3ac082bbad0cdee4c8dfd1ee5202ea48, type: 3}
+  cardPrefab: {fileID: 5875111711050015325, guid: e0b8d1adf98491148bc6a22581cd3ed1, type: 3}
   cardParent: {fileID: 1092324887}
 --- !u!1 &891480011
 GameObject:
@@ -6332,17 +6332,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092324886}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5640235, y: 6.4131875, z: 1.7570378}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -21.299}
+  m_LocalScale: {x: 2.2232926, y: 2.7354834, z: 0.7494475}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1224429526}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 854.957, y: 190.1}
-  m_SizeDelta: {x: 597.476, y: 227.69}
+  m_AnchoredPosition: {x: 231.99997, y: 379.99997}
+  m_SizeDelta: {x: 503.706, y: 204.342}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1092324891
 CanvasRenderer:
@@ -6370,7 +6370,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: -100
+  m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1

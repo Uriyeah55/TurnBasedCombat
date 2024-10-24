@@ -408,7 +408,7 @@ public class BattleSystem : MonoBehaviour
 		//playSound(6);
 		playerAC.SetInteger("currentStance", 2);
 		skillCardPanel.SetActive(true);
-		       canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-100f, -40f, .2f);
+		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
 
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
 		camBehindPlayer.GetComponent<Animator>().SetTrigger("triggZoom");
