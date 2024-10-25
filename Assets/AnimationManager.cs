@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIBattleManager : MonoBehaviour
+public class AnimationManager : MonoBehaviour
 {
-
-    //declarar botons
-
+    Animator playerAC;
+	Animator enemyAC;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,16 +17,4 @@ public class UIBattleManager : MonoBehaviour
     {
         
     }
-   void  hideSkillButtons(){
-
-    }
-		void hideAudioButtons(){
-
-        }
-		void hideAttackName(){
-
-        }
-        void showAttackName(){
-            
-        }
 }

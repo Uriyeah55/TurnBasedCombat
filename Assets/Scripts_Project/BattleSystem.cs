@@ -23,8 +23,9 @@ public class BattleSystem : MonoBehaviour
 	public GameObject firagaEffect;
 	public GameObject SFXContainer;
 
+
  	[Header("Cameras")]
-	public GameObject camManagerObject;
+	public GameObject cameraManager;
 	public GameObject canvasCombat;
 
 	public GameObject mainCam;
@@ -46,7 +47,7 @@ public class BattleSystem : MonoBehaviour
 	public GameObject playerGO;
 	public GameObject skillCardPanel;
 	public GameObject enemyGO;
-	public GameObject chimera;
+	
 	Animator personaPlayerAC;
 
 	public GameObject player;
@@ -89,7 +90,6 @@ public class BattleSystem : MonoBehaviour
     {
 		hideSkillButtons();
 		camAnimator= mainCam.gameObject.GetComponent<Animator>();
-		personaPlayerAC= chimera.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
 		enemyAC=enemy.GetComponent<Animator>();
 		mainAudioSource = this.gameObject.GetComponent<AudioSource>();
@@ -411,7 +411,9 @@ public class BattleSystem : MonoBehaviour
 		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
 
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
-		camBehindPlayer.GetComponent<Animator>().SetTrigger("triggZoom");
+		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
+
+
 
 		buttonAttack.gameObject.SetActive(true);
 		buttonAttack2.gameObject.SetActive(true);
@@ -466,6 +468,7 @@ public class BattleSystem : MonoBehaviour
 
 	public void showSkillButtons()
 	{
+		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",1);
 		playerAC.SetInteger("currentStance", 0);
 		combatPanel.gameObject.SetActive(true);		
 		buttonHeal.gameObject.SetActive(false);
