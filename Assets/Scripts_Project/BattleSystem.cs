@@ -11,11 +11,14 @@ public enum BattleState {START,PLAYERTURN,ENEMYTURN,WON,LOST}
 public class BattleSystem : MonoBehaviour
 {
 
+ 	[Header("Managers")]
+	public GameObject audioManager;
+
  	[Header("Audio")]
+
 	AudioSource mainAudioSource;
 	public AudioClip[] soundsArray;
 	public GameObject BGMpanel;
-	public GameObject audioManager;
 
 	 [Header("FX")]
 	public GameObject focusedEffect;
@@ -30,7 +33,7 @@ public class BattleSystem : MonoBehaviour
 
 	public GameObject mainCam;
 	public GameObject enemyCam;
-	public GameObject enemyPersonaCam;
+	public GameObject enemyPersonaCam,cardParent;
 	public GameObject playerCam;
 	public GameObject zoomFacePlayerCam;
 	public GameObject chimeraCameraws;
@@ -469,19 +472,23 @@ public class BattleSystem : MonoBehaviour
 	public void showSkillButtons()
 	{
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",1);
+		//StartCoroutine(collectCards());
 		playerAC.SetInteger("currentStance", 0);
 		combatPanel.gameObject.SetActive(true);		
 		buttonHeal.gameObject.SetActive(false);
 		buttonAttack.gameObject.SetActive(false);
 
 		buttonAttack2.gameObject.SetActive(false);
-		buttonGreatHeal.gameObject.SetActive(false);
-
-		buttonOffenseSkills.gameObject.SetActive(true);
-		buttonDefenseSkills.gameObject.SetActive(true);
-		escapeBtn.gameObject.SetActive(true);		
+		buttonGreatHeal.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(false);
 	}
+
+	IEnumerator  collectCards(){
+		yield return new WaitForSeconds(2f);
+		cardParent.SetActive(false);
+
+	}
+
 
 	IEnumerator PlayerHeal()
 	{
