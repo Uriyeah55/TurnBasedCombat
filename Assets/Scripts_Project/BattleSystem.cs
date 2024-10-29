@@ -86,11 +86,15 @@ public class BattleSystem : MonoBehaviour
 
 	public GameObject previousSongButton;
 	public GameObject nextSongButton;
+	public Skill playerSelectedSkill;
+	public UIBattleManager uiManager;
+	
 
 	bool isFocused=false;
     // Start is called before the first frame update
     void Start()
     {
+		uiManager=GetComponent<UIBattleManager>();
 		hideSkillButtons();
 		camAnimator= mainCam.gameObject.GetComponent<Animator>();
 		playerAC=player.GetComponent<Animator>();
@@ -99,6 +103,9 @@ public class BattleSystem : MonoBehaviour
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
     }
+	void Update(){
+		Debug.Log("state: " + state);
+	}
 	IEnumerator SetupBattle()
 	{
 		attackAnnouncer.enabled=false;
@@ -125,15 +132,16 @@ public class BattleSystem : MonoBehaviour
 	}
 #region 
 //Player attack 1
-	IEnumerator PlayerAttack()
+	public IEnumerator PlayerAttack()
 	{
+		Debug.Log("player attack enumaerator");
 		hideSkillButtons();
 		hideAudioButtons();
 		hideAttackName();
 		//crida so persona!
 		playSound(4);
 		//enable player behind cam
-		
+		uiManager.hideSkillButtons();
 		//camManagerObject.GetComponent<CameraManager>().enableSpecificCamera(1);
 		//playerCam.SetActive(true);
 		playerAC.SetTrigger("miniAttack");

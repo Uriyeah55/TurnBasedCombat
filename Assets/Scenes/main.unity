@@ -3591,7 +3591,7 @@ GameObject:
   - component: {fileID: 889164378}
   - component: {fileID: 889164379}
   m_Layer: 0
-  m_Name: ==MANAGER==
+  m_Name: MANAGER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3662,6 +3662,8 @@ MonoBehaviour:
   textAttackAnnouncer: {fileID: 573409225}
   previousSongButton: {fileID: 1283653845}
   nextSongButton: {fileID: 1517328904}
+  playerSelectedSkill: {fileID: 0}
+  uiManager: {fileID: 0}
 --- !u!4 &889164374
 Transform:
   m_ObjectHideFlags: 0

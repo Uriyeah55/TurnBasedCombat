@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public TMP_Text skillNameText, skillDescription;
     public Sprite skillIcon;
@@ -13,11 +12,15 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Vector3 originalPosition;
     private Vector3 hoverOffset = new Vector3(0, 20, 0);
     private RectTransform cardRectTransform;  // El RectTransform de la carta, no del contenedor
+    public GameObject manager;
+
+    public Skill currentSkill;
 
     private bool isHovered = false;
 
     void Start()
     {
+        manager=GameObject.Find("MANAGER");
         hideInfoTexts();
         // Obtener el RectTransform de la propia carta (no el contenedor)
         cardRectTransform = GetComponent<RectTransform>();
@@ -36,7 +39,6 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         Debug.Log("Setting skill data for: " + skill.skillName);
 
-
         if (skillNameText == null || skillDescription == null)
         {
             Debug.LogError("Text components not assigned or found in the prefab hierarchy!");
@@ -45,6 +47,7 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         skillNameText.text = skill.skillName;
         skillDescription.text = skill.skillDescription;
+        currentSkill=skill;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -52,11 +55,8 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (!isHovered)
         {
             isHovered = true;
-            // Mover solo la carta dentro del contenedor usando anchoredPosition
-           // cardRectTransform.anchoredPosition = originalPosition + hoverOffset;
-           image.rectTransform.localPosition= new Vector3(0,20,0);
-           showInfoTexts();
-
+            image.rectTransform.localPosition = new Vector3(0, 20, 0);
+            showInfoTexts();
         }
     }
 
@@ -65,19 +65,34 @@ public class SkillCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (isHovered)
         {
             isHovered = false;
-            // Restaurar la posición de la carta dentro del contenedor
-            //cardRectTransform.anchoredPosition = originalPosition;
-           image.rectTransform.localPosition= Vector3.zero;
-           hideInfoTexts();
-
+            image.rectTransform.localPosition = Vector3.zero;
+            hideInfoTexts();
         }
     }
-        public void showInfoTexts(){
-        skillNameText.enabled=true;
-        skillDescription.enabled=true;
+
+public void OnPointerClick(PointerEventData eventData)
+{
+    Debug.Log("Skill card clicked!");
+
+    // Establecer la habilidad seleccionada
+    manager.GetComponent<BattleSystem>().playerSelectedSkill = currentSkill;
+
+    // Llamar a PlayerAttack utilizando StartCoroutine
+    StartCoroutine(manager.GetComponent<BattleSystem>().PlayerAttack());
+
+    Debug.Log("current skill: " + currentSkill);
+}
+
+
+    public void showInfoTexts()
+    {
+        skillNameText.enabled = true;
+        skillDescription.enabled = true;
     }
-    public void hideInfoTexts(){
-        skillNameText.enabled=false;
-        skillDescription.enabled=false;
+
+    public void hideInfoTexts()
+    {
+        skillNameText.enabled = false;
+        skillDescription.enabled = false;
     }
 }

@@ -31,12 +31,14 @@ public class UIBattleManager : MonoBehaviour
         playerAC.SetInteger("currentStance", 2);
 		skillCardPanel.SetActive(true);
 		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
-btnBack.gameObject.SetActive(true);
+        btnBack.gameObject.SetActive(true);
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
     }
-   public void  hideSkillButtons(){
+    public void hideSkillButtons(){
 
+        btnSkills.gameObject.SetActive(false);
+        btnShuffle.gameObject.SetActive(false);
     }
 		void hideAudioButtons(){
 
