@@ -479,6 +479,7 @@ public class BattleSystem : MonoBehaviour
 
 	public void showSkillButtons()
 	{
+		GlobalVars.isShuffling=false;
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",1);
 		//StartCoroutine(collectCards());
 		playerAC.SetInteger("currentStance", 0);
@@ -490,6 +491,11 @@ public class BattleSystem : MonoBehaviour
 		buttonGreatHeal.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(false);
 	}
+	static public void activateShuffleMode(){
+		GlobalVars.isShuffling=true;
+
+	}
+
 
 	IEnumerator  collectCards(){
 		yield return new WaitForSeconds(2f);

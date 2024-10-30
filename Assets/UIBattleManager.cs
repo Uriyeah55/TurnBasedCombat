@@ -28,6 +28,7 @@ public class UIBattleManager : MonoBehaviour
      public void  showSkills()
      {
         btnSkills.gameObject.SetActive(false);
+        btnShuffle.gameObject.SetActive(false);
         playerAC.SetInteger("currentStance", 2);
 		skillCardPanel.SetActive(true);
 		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
@@ -35,11 +36,35 @@ public class UIBattleManager : MonoBehaviour
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
     }
+         public void  showShuffleMenu()
+     {
+        btnSkills.gameObject.SetActive(false);
+        playerAC.SetInteger("currentStance", 2);
+		skillCardPanel.SetActive(true);
+		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
+        btnBack.gameObject.SetActive(true);
+		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
+		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
+    }
+        public void showSkillButtons(){
+		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
+
+        btnSkills.gameObject.SetActive(true);
+        btnShuffle.gameObject.SetActive(true);
+    }
     public void hideSkillButtons(){
 
         btnSkills.gameObject.SetActive(false);
         btnShuffle.gameObject.SetActive(false);
     }
+    	static public void activateShuffleMode()
+        {
+		    GlobalVars.isShuffling=true;
+	    }
+        static public void disableShuffleMode()
+        {
+		    GlobalVars.isShuffling=false;
+	    }
 		void hideAudioButtons(){
 
         }
