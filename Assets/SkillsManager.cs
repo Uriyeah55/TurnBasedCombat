@@ -7,9 +7,13 @@ public class SkillsManager : MonoBehaviour
     public List<Skill> CharacterSkills;  // List of skills
     public GameObject cardPrefab;         // Prefab for the skill card
     public Transform cardParent;          // Parent transform for the instantiated cards
+    public List<ShuffleSlot> shuffleSlots;         // Prefab for the skill card
+
 
     void Start()
     {
+                shuffleSlots = new List<ShuffleSlot>(GetComponentsInChildren<ShuffleSlot>());
+        
         // Ensure that CharacterSkills is populated
         if (CharacterSkills == null || CharacterSkills.Count == 0)
         {
@@ -51,5 +55,15 @@ private IEnumerator SpawnSkillCards()
         yield return null; // Esperar al siguiente frame
     }
 }
+
+  public void ClearAllShuffleSlots()
+    {
+        foreach (ShuffleSlot slot in shuffleSlots)
+        {
+            slot.ClearSlot();  // Llama al método ClearSlot de cada ShuffleSlot
+        }
+        
+        Debug.Log("All shuffle slots have been cleared.");
+    }
 
 }

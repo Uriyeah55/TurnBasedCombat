@@ -491,10 +491,7 @@ public class BattleSystem : MonoBehaviour
 		buttonGreatHeal.gameObject.SetActive(false);		
 		backSkills.gameObject.SetActive(false);
 	}
-	static public void activateShuffleMode(){
-		GlobalVars.isShuffling=true;
 
-	}
 
 
 	IEnumerator  collectCards(){
