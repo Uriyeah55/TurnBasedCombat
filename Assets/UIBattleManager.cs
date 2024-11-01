@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class UIBattleManager : MonoBehaviour
 {
 
-    public Button btnSkills,btnShuffle,btnBack;
-    public GameObject skillCardPanel,canvasCombat,camBehindPlayer;
+    public Button btnSkills,btnShuffle,btnBack,btnGenre;
+    public GameObject skillCardPanel,canvasCombat,camBehindPlayer,shuffleMenu;
+    public GameObject[] shuffleBack;
     public AnimationManager animManager;
     Animator playerAC;
 
@@ -27,6 +28,25 @@ public class UIBattleManager : MonoBehaviour
     }
      public void  showSkills()
      {
+
+        if(GlobalVars.isShuffling){
+            shuffleMenu.SetActive(true);
+            btnShuffle.gameObject.SetActive(true);
+
+            foreach (GameObject backSlot in shuffleBack)
+            {
+                backSlot.SetActive(true);
+            }
+        }
+        else{
+            shuffleMenu.SetActive(false);
+            btnShuffle.gameObject.SetActive(false);
+                 foreach (GameObject backSlot in shuffleBack)
+                 {
+                    backSlot.SetActive(false);
+                 }
+
+        }
         btnSkills.gameObject.SetActive(false);
         btnShuffle.gameObject.SetActive(false);
         playerAC.SetInteger("currentStance", 2);
@@ -47,15 +67,21 @@ public class UIBattleManager : MonoBehaviour
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
     }
         public void showSkillButtons(){
-		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
+		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",1);
 
         btnSkills.gameObject.SetActive(true);
         btnShuffle.gameObject.SetActive(true);
+        btnGenre.gameObject.SetActive(true);
+		skillCardPanel.SetActive(false);
+
     }
     public void hideSkillButtons(){
 
         btnSkills.gameObject.SetActive(false);
         btnShuffle.gameObject.SetActive(false);
+        btnGenre.gameObject.SetActive(false);
+		skillCardPanel.SetActive(false);
+
     }
     	static public void activateShuffleMode()
         {

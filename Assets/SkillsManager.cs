@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillsManager : MonoBehaviour
 {
     public List<Skill> CharacterSkills;  // List of skills
-    public GameObject cardPrefab;         // Prefab for the skill card
+    public GameObject cardPrefab,shuffleMenu;         // Prefab for the skill card
     public Transform cardParent;          // Parent transform for the instantiated cards
     public List<ShuffleSlot> shuffleSlots;         // Prefab for the skill card
 
@@ -45,6 +45,7 @@ private IEnumerator SpawnSkillCards()
 
         if (skillCardUI != null)
         {
+            skillCardUI.shuffleMenu=shuffleMenu;
             skillCardUI.SetSkillData(skill);
         }
         else

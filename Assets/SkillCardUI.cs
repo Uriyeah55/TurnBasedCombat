@@ -27,7 +27,7 @@
         void Start()
         {
             manager = GameObject.Find("MANAGER");
-            shuffleMenu = GameObject.Find("ShuffleMenu");
+           // shuffleMenu = GameObject.Find("ShuffleMenu");
             hideInfoTexts();
 
             // Obtener el RectTransform de la propia carta
