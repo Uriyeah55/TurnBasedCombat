@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: b750c281260c75a4e984a6596ef6cb18, type: 2}
-  m_Color: {r: 0.6509434, g: 0.4206568, b: 0.4206568, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -405,5 +405,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillNameText: {fileID: 6248123291057122663}
   skillDescription: {fileID: 6336690073233638229}
-  skillIcon: {fileID: 0}
   image: {fileID: 3096719578175654309}
+  manager: {fileID: 0}
+  shuffleMenu: {fileID: 0}
+  currentSkill: {fileID: 0}
+  shuffleSlots: []
