@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIBattleManager : MonoBehaviour
 {
 
-    public Button btnSkills,btnShuffle,btnBack,btnGenre;
+    public Button btnSkills,btnShuffle,btnBack,btnGenre,btnClear;
     public GameObject skillCardPanel,canvasCombat,camBehindPlayer,shuffleMenu;
     public GameObject[] shuffleBack;
     public AnimationManager animManager;
@@ -31,7 +31,7 @@ public class UIBattleManager : MonoBehaviour
 
         if(GlobalVars.isShuffling){
             shuffleMenu.SetActive(true);
-            btnShuffle.gameObject.SetActive(true);
+            btnClear.gameObject.SetActive(true);
 
             foreach (GameObject backSlot in shuffleBack)
             {
@@ -40,7 +40,7 @@ public class UIBattleManager : MonoBehaviour
         }
         else{
             shuffleMenu.SetActive(false);
-            btnShuffle.gameObject.SetActive(false);
+            btnClear.gameObject.SetActive(false);
                  foreach (GameObject backSlot in shuffleBack)
                  {
                     backSlot.SetActive(false);
@@ -49,6 +49,8 @@ public class UIBattleManager : MonoBehaviour
         }
         btnSkills.gameObject.SetActive(false);
         btnShuffle.gameObject.SetActive(false);
+        btnGenre.gameObject.SetActive(false);
+
         playerAC.SetInteger("currentStance", 2);
 		skillCardPanel.SetActive(true);
 		canvasCombat.GetComponent<HorizontalSpacingLerp>().StartLerpingSpacing(-40f, -100f, .2f);
@@ -73,6 +75,8 @@ public class UIBattleManager : MonoBehaviour
         btnShuffle.gameObject.SetActive(true);
         btnGenre.gameObject.SetActive(true);
 		skillCardPanel.SetActive(false);
+        btnClear.gameObject.SetActive(false);
+
 
     }
     public void hideSkillButtons(){
@@ -81,6 +85,7 @@ public class UIBattleManager : MonoBehaviour
         btnShuffle.gameObject.SetActive(false);
         btnGenre.gameObject.SetActive(false);
 		skillCardPanel.SetActive(false);
+        btnBack.gameObject.SetActive(false);
 
     }
     	static public void activateShuffleMode()
