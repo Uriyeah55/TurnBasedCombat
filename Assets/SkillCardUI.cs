@@ -28,13 +28,6 @@
         {
             manager = GameObject.Find("MANAGER");
             shuffleMenu = GameObject.Find("ShuffleMenu");
-                      if (shuffleMenu == null){
-        Debug.LogError("ShuffleMenu is not assigned. Please check the assignment in the inspector or in Start().");
-
-                      }
-    {
-       
-    }
             hideInfoTexts();
 
             // Obtener el RectTransform de la propia carta
@@ -112,12 +105,6 @@
 
     private ShuffleSlot GetEmptyShuffleSlot()
     {
-
-          if (shuffleMenu == null)
-    {
-        Debug.LogError("ShuffleMenu is not assigned. Please check the assignment in the inspector or in Start().");
-        return null;
-    }
         // Recorre todos los hijos de ShuffleMenu buscando un slot vacío
         foreach (ShuffleSlot slot in shuffleMenu.GetComponentsInChildren<ShuffleSlot>())
         {
