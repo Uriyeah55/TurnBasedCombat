@@ -4080,6 +4080,7 @@ MonoBehaviour:
   - {fileID: 1641773760}
   - {fileID: 1096086721}
   - {fileID: 1391905889}
+  shuffleBackGlobal: {fileID: 1477097569}
   animManager: {fileID: 889164379}
   shuffleSlots:
   - {fileID: 431969933}
@@ -5798,7 +5799,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.441
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -9739,7 +9740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2076796561
 RectTransform:
   m_ObjectHideFlags: 0

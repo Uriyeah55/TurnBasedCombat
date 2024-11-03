@@ -10,6 +10,8 @@ public class UIBattleManager : MonoBehaviour
     public Button btnSkills,btnShuffle,btnBack,btnGenre,btnClear;
     public GameObject skillCardPanel,canvasCombat,camBehindPlayer,shuffleMenu;
     public GameObject[] shuffleBack;
+    public GameObject shuffleBackGlobal;
+
     public AnimationManager animManager;
 
      public List<ShuffleSlot> shuffleSlots = new List<ShuffleSlot>(); // Lista de todos los slots de shuffle
@@ -32,6 +34,7 @@ public class UIBattleManager : MonoBehaviour
      {
 
         if(GlobalVars.isShuffling){
+            shuffleBackGlobal.SetActive(true);
             shuffleMenu.SetActive(true);
             btnClear.gameObject.SetActive(true);
 
