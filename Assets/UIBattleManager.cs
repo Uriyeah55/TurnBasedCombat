@@ -11,6 +11,8 @@ public class UIBattleManager : MonoBehaviour
     public GameObject skillCardPanel,canvasCombat,camBehindPlayer,shuffleMenu;
     public GameObject[] shuffleBack;
     public AnimationManager animManager;
+
+     public List<ShuffleSlot> shuffleSlots = new List<ShuffleSlot>(); // Lista de todos los slots de shuffle
     Animator playerAC;
 
     // Start is called before the first frame update
@@ -41,10 +43,12 @@ public class UIBattleManager : MonoBehaviour
         else{
             shuffleMenu.SetActive(false);
             btnClear.gameObject.SetActive(false);
-                 foreach (GameObject backSlot in shuffleBack)
-                 {
-                    backSlot.SetActive(false);
-                 }
+
+            foreach (GameObject backSlot in shuffleBack)
+            {
+                backSlot.SetActive(false);
+                backSlot.gameObject.SetActive(false);
+            }
 
         }
         btnSkills.gameObject.SetActive(false);
@@ -68,7 +72,8 @@ public class UIBattleManager : MonoBehaviour
 		//CameraTransitionManager.GetComponent<CameraTransitionManager>().StartCameraTransition(1,2);
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",0);
     }
-        public void showSkillButtons(){
+        public void showSkillButtons()
+        {
 		camBehindPlayer.GetComponent<Animator>().SetInteger("currentState",1);
 
         btnSkills.gameObject.SetActive(true);
@@ -79,6 +84,16 @@ public class UIBattleManager : MonoBehaviour
 
 
     }
+    public void hideShuffleMenu()
+    {
+        shuffleMenu.SetActive(false);
+        btnClear.gameObject.SetActive(false);
+        foreach (GameObject backSlot in shuffleBack)
+            {
+                backSlot.SetActive(false);
+                backSlot.gameObject.SetActive(false);
+            }
+    }
     public void hideSkillButtons(){
 
         btnSkills.gameObject.SetActive(false);
@@ -87,6 +102,27 @@ public class UIBattleManager : MonoBehaviour
 		skillCardPanel.SetActive(false);
         btnBack.gameObject.SetActive(false);
 
+    }
+
+        public void ClearAllShuffleSlots()
+    {
+        showShuffleBacks();
+        foreach (ShuffleSlot slot in shuffleSlots)
+        {
+            if (slot != null)
+            {
+                slot.ClearSlot(); // Llama a ClearSlot en cada slot
+            }
+        }
+        Debug.Log("All shuffle slots have been cleared.");
+    }
+
+    public void showShuffleBacks(){
+            foreach (GameObject backSlot in shuffleBack)
+            {
+                backSlot.SetActive(true);
+                //backSlot.gameObject.SetActive(true);
+            }
     }
     	static public void activateShuffleMode()
         {
