@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 677fbc05bca9e584c8f86f11bc53612c, type: 3}
-  m_Name: Megidolaon
+  m_Name: Hardcore
   m_EditorClassIdentifier: 
-  skillName: Megidolaon
-  skillDescription: dsdsds
-  damage: 5
+  skillName: Hardcore
+  skillDescription: aaaaa
+  damage: 3
   isOffensive: 1
-  skillSprite: {fileID: 0}
+  skillSprite: {fileID: 21300000, guid: 23a193e743a17e14ea4bacafe103f090, type: 3}

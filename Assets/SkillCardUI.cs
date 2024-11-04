@@ -54,6 +54,7 @@
             Debug.Log("Setting skill data for: " + skill.skillName);
             skillNameText.text = skill.skillName;
             skillDescription.text = skill.skillDescription;
+    image.sprite = skill.skillSprite;
             currentSkill = skill;
         }
         public void OnPointerEnter(PointerEventData eventData)

@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.87
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.1981132, g: 0.11120505, b: 0.1312354, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: dbb6a31ea860bb6429aafac87970386a, type: 2}
+  m_SubtractiveShadowColor: {r: 0.36538804, g: 0.6124587, b: 0.6509434, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 82316c3cd21bb264e9ac979ea48255ab, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -223,7 +223,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: f8bd6bf6fc1b9104b91404ff101b9170, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 5b5697a83d20ee847b99043fbdddbddd, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -3045,7 +3045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &671523770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3138,7 +3138,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671523769}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12ff3dcd233b9a04cb510469061dcf43, type: 3}
   m_Name: 
@@ -3349,13 +3349,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.37831652, y: -0.23814175, z: 0.10136958, w: 0.8887572}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 46.116, y: -30, z: 0}
 --- !u!1 &714041775
 GameObject:
   m_ObjectHideFlags: 0
@@ -4210,6 +4210,7 @@ MonoBehaviour:
   CharacterSkills:
   - {fileID: 11400000, guid: e8f993473fa505b4095008215a57b08f, type: 2}
   - {fileID: 11400000, guid: b6258b1cb5999cc4f8c68e4adaa95489, type: 2}
+  - {fileID: 11400000, guid: d821ddd49d820a04494b3df6d9c1fe9f, type: 2}
   cardPrefab: {fileID: 5875111711050015325, guid: e0b8d1adf98491148bc6a22581cd3ed1, type: 3}
   shuffleMenu: {fileID: 883966506}
   cardParent: {fileID: 1092324887}
