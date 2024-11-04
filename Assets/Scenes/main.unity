@@ -3452,6 +3452,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 889164375}
+        m_TargetAssemblyTypeName: UIBattleManager, Assembly-CSharp
+        m_MethodName: ClearUsedSkills
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &714041778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3695,6 +3707,18 @@ MonoBehaviour:
       - m_Target: {fileID: 889164375}
         m_TargetAssemblyTypeName: UIBattleManager, Assembly-CSharp
         m_MethodName: hideShuffleMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 889164375}
+        m_TargetAssemblyTypeName: UIBattleManager, Assembly-CSharp
+        m_MethodName: ClearUsedSkills
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4086,6 +4110,7 @@ MonoBehaviour:
   - {fileID: 431969933}
   - {fileID: 1081264494}
   - {fileID: 1839043320}
+  usedSkills: []
 --- !u!114 &889164376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4262,7 +4287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &891480012
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5800,7 +5825,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.441
+  m_Volume: 0.18
   m_Pitch: 1
   Loop: 0
   Mute: 0
